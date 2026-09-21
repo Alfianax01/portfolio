@@ -79,7 +79,7 @@ const PORTFOLIO_DATA = {
     },
   ],
 
-  // Proyek Nyata dari GitHub Alfianax01
+  // Proyek Nyata dari GitHub Alfianax01 (Anti-Slop Technical Specifications)
   projects: [
     {
       id: "register-tni",
@@ -88,17 +88,33 @@ const PORTFOLIO_DATA = {
       featured: true,
       repoUrl: "https://github.com/Alfianax01/register",
       demoUrl: "https://github.com/Alfianax01/register",
-      mockupType: "dashboard",
-      mockupUrl: "github.com/Alfianax01/register",
-      tags: ["TypeScript", "QR Code Scanner", "Real-Time Telemetry", "PostgreSQL"],
-      tabs: {
-        overview:
-          "Sistem E-Registrasi & Check-In digital resmi untuk RAPIM TNI 2026. Dilengkapi penerbitan e-tiket ber-QR Code, presensi multi-checkpoint berbasis pemindaian kamera instan, manajemen penempatan kursi & wisma terstruktur, serta analitik kuota kehadiran tamu VVIP real-time.",
-        architecture:
-          "Dibangun dengan TypeScript full-stack, pipeline validasi barcode kamera WebRTC berlatensi rendah, database relasional untuk integritas seat allotment, serta ekspor laporan presensi otomatis.",
-        impact:
-          "Mengeliminasi antrean fisik registrasi delegasi, mempercepat verifikasi check-in hingga kurang dari 2 detik per delegasi, dan menjamin keakuratan data kursi 100%.",
-      },
+      language: "TypeScript",
+      specFile: "src/services/checkin.service.ts",
+      specRuntime: "TypeScript / WebRTC",
+      tags: ["TypeScript", "QR Scanner", "PostgreSQL", "WebRTC"],
+      summary:
+        "Sistem registrasi dan presensi digital untuk delegasi RAPIM TNI. Mengintegrasikan pemindaian barcode kamera WebRTC berlatensi rendah, manajemen penempatan kursi terstruktur, dan validasi tiket digital terenkripsi.",
+      highlights: [
+        "Verifikasi barcode e-tiket via stream kamera WebRTC instan",
+        "Penyimpanan relasional terstruktur untuk integritas alokasi kursi delegasi",
+        "Rekapitulasi kehadiran real-time siap ekspor laporan resmi"
+      ],
+      specType: "code",
+      specSnippet: `<span class="c-kw">interface</span> <span class="c-var">CheckInPayload</span> {
+  <span class="c-prop">ticketHash</span>: <span class="c-str">string</span>;
+  <span class="c-prop">checkpointId</span>: <span class="c-str">string</span>;
+}
+
+<span class="c-kw">export async function</span> <span class="c-func">verifyDelegation</span>(<span class="c-var">payload</span>: <span class="c-var">CheckInPayload</span>) {
+  <span class="c-kw">const</span> <span class="c-var">delegate</span> = <span class="c-kw">await</span> <span class="c-var">db</span>.<span class="c-prop">delegates</span>.<span class="c-func">findByHash</span>(<span class="c-var">payload</span>.<span class="c-prop">ticketHash</span>);
+  <span class="c-kw">if</span> (!<span class="c-var">delegate</span> || <span class="c-var">delegate</span>.<span class="c-prop">hasEntered</span>) {
+    <span class="c-kw">return</span> { <span class="c-prop">status</span>: <span class="c-str">409</span>, <span class="c-prop">ok</span>: <span class="c-kw">false</span> };
+  }
+  <span class="c-kw">return await</span> <span class="c-var">db</span>.<span class="c-func">transaction</span>(<span class="c-kw">async</span> (<span class="c-var">tx</span>) =&gt; {
+    <span class="c-kw">await</span> <span class="c-var">tx</span>.<span class="c-prop">logs</span>.<span class="c-func">record</span>(<span class="c-var">delegate</span>.<span class="c-prop">id</span>, <span class="c-var">payload</span>.<span class="c-prop">checkpointId</span>);
+    <span class="c-kw">return</span> <span class="c-var">tx</span>.<span class="c-prop">delegates</span>.<span class="c-func">markVerified</span>(<span class="c-var">delegate</span>.<span class="c-prop">id</span>, { <span class="c-prop">seat</span>: <span class="c-var">delegate</span>.<span class="c-prop">seatNo</span> });
+  });
+}`
     },
     {
       id: "secintel-toolkit",
@@ -107,17 +123,26 @@ const PORTFOLIO_DATA = {
       featured: false,
       repoUrl: "https://github.com/Alfianax01/secintel-toolkit",
       demoUrl: "https://github.com/Alfianax01/secintel-toolkit",
-      mockupType: "cli",
-      mockupUrl: "github.com/Alfianax01/secintel-toolkit",
-      tags: ["Node.js", "Threat Intelligence", "OSINT Recon", "DNS/SSL Audit"],
-      tabs: {
-        overview:
-          "Perangkat Cybersecurity & OSINT Reconnaissance modular berbasis Node.js untuk analisis Threat Intel IP, validasi operator nomor telepon, geocoding alamat, audit DNS/SSL/Security Headers, deteksi celah miskonfigurasi, serta kepatuhan standar keamanan AI.",
-        architecture:
-          "Arsitektur engine modular decoupled, concurrent asynchronous lookup engine, parser sertifikat TLS/SSL, dan integrasi intelligence API feed secara terenkripsi.",
-        impact:
-          "Memangkas waktu initial reconnaissance infrastruktur target dari 30 menit menjadi beberapa detik dalam format terstruktur dan siap diaudit.",
-      },
+      language: "JavaScript",
+      specFile: "cli/recon-scanner.js",
+      specRuntime: "Node.js CLI",
+      tags: ["Node.js", "Threat Intel", "DNS/SSL Audit", "OSINT Recon"],
+      summary:
+        "Toolkit investigasi OSINT dan cybersecurity berbasis Node.js untuk audit DNS/SSL, profiling ancaman IP publik, validasi nomor telepon operator, dan deteksi miskonfigurasi keamanan web.",
+      highlights: [
+        "Lookup concurrent asynchronous untuk DNS, SSL, dan Security Headers",
+        "Deteksi reputasi ancaman IP publik via feed Threat Intelligence",
+        "Parser sertifikat TLS dan verifikasi konfigurasi cipher suite"
+      ],
+      specType: "cli",
+      specSnippet: `<span class="c-comment"># Menjalankan pemindaian modular target infrastruktur</span>
+<span class="c-kw">$</span> secintel scan --target enterprise.domain --modules dns,ssl,headers
+
+<span class="c-str">[+] DNS Recon</span>: 4 NS records ditemukan, DNSSEC aktif
+<span class="c-str">[+] TLS Audit</span>: TLSv1.3 ternegosiasi | Cipher AES_256_GCM
+<span class="c-str">[+] Cert Check</span>: CN=*.enterprise.domain (Masa berlaku valid)
+<span class="c-str">[+] Headers</span>: HSTS Strict, CSP terkonfigurasi, X-Frame DENY
+<span class="c-func">[✓] Hasil Audit</span>: 0 miskonfigurasi kritis terdeteksi`
     },
     {
       id: "ruangsinema",
@@ -126,17 +151,31 @@ const PORTFOLIO_DATA = {
       featured: false,
       repoUrl: "https://github.com/Alfianax01/RuangSinema",
       demoUrl: "https://github.com/Alfianax01/RuangSinema",
-      mockupType: "streaming",
-      mockupUrl: "github.com/Alfianax01/RuangSinema",
-      tags: ["TypeScript", "TMDb API", "HLS Streaming", "Web & Android"],
-      tabs: {
-        overview:
-          "Platform media hiburan modern untuk film bioskop, Drakor, Dracin, & sinema Indonesia dengan multi-server video player 60 FPS, subtitle bahasa Indonesia tersinkronisasi, dan integrasi katalog metadata TMDb API.",
-        architecture:
-          "TypeScript frontend teroptimasi, adaptive bitrate streaming handling, caching layer dinamis untuk poster/sinopsis, dan layout responsif multi-device (Desktop & Android).",
-        impact:
-          "Menyajikan pengalaman menonton streaming yang mulus, responsif, dan bebas buffering dengan UI modern bergaya platform streaming kelas atas.",
-      },
+      language: "TypeScript",
+      specFile: "src/player/hls-engine.ts",
+      specRuntime: "TypeScript / HLS.js",
+      tags: ["TypeScript", "HLS Streaming", "TMDb API", "Responsive Web"],
+      summary:
+        "Platform streaming hiburan responsif dengan pemutar video adaptif HLS (HTTP Live Streaming), integrasi katalog metadata TMDb API, dan kontrol playback multi-resolusi.",
+      highlights: [
+        "Integrasi pemutar video adaptif HLS dengan seleksi multi-server",
+        "Sinkronisasi metadata judul, sinopsis, dan poster via REST API TMDb",
+        "Antarmuka responsif tanpa lag untuk peramban desktop dan perangkat mobile"
+      ],
+      specType: "code",
+      specSnippet: `<span class="c-kw">import</span> <span class="c-var">Hls</span> <span class="c-kw">from</span> <span class="c-str">"hls.js"</span>;
+
+<span class="c-kw">export function</span> <span class="c-func">mountStreamPlayer</span>(<span class="c-var">videoEl</span>: <span class="c-var">HTMLVideoElement</span>, <span class="c-var">manifestUrl</span>: <span class="c-str">string</span>) {
+  <span class="c-kw">if</span> (<span class="c-var">Hls</span>.<span class="c-func">isSupported</span>()) {
+    <span class="c-kw">const</span> <span class="c-var">hls</span> = <span class="c-kw">new</span> <span class="c-var">Hls</span>({ <span class="c-prop">autoStartLoad</span>: <span class="c-kw">true</span>, <span class="c-prop">maxBufferLength</span>: <span class="c-str">30</span> });
+    <span class="c-var">hls</span>.<span class="c-func">loadSource</span>(<span class="c-var">manifestUrl</span>);
+    <span class="c-var">hls</span>.<span class="c-func">attachMedia</span>(<span class="c-var">videoEl</span>);
+    <span class="c-var">hls</span>.<span class="c-func">on</span>(<span class="c-var">Hls</span>.<span class="c-prop">Events</span>.<span class="c-prop">MANIFEST_PARSED</span>, (_, <span class="c-var">data</span>) =&gt; {
+      <span class="c-var">console</span>.<span class="c-func">info</span>(<span class="c-str">"Stream siap dengan level bitrate adaptif"</span>);
+    });
+    <span class="c-kw">return</span> <span class="c-var">hls</span>;
+  }
+}`
     },
     {
       id: "jam-sholat",
@@ -145,17 +184,30 @@ const PORTFOLIO_DATA = {
       featured: false,
       repoUrl: "https://github.com/Alfianax01/Jam-sholat",
       demoUrl: "https://github.com/Alfianax01/Jam-sholat",
-      mockupType: "islamic",
-      mockupUrl: "github.com/Alfianax01/Jam-sholat",
+      language: "Dart",
+      specFile: "lib/services/qibla_calc.dart",
+      specRuntime: "Flutter / Dart",
       tags: ["Flutter", "Dart", "Geodesic Compass", "Kemenag RI API"],
-      tabs: {
-        overview:
-          "Jam Islami mewah lintas platform (Web & Mobile Flutter) dengan kalkulasi jadwal sholat presisi koordinat Kemenag RI, kompas arah kiblat geodesik magnetometrik, serta auto adzan otomatis beranimasi halus.",
-        architecture:
-          "Kalkulasi algoritma astronomi geodesik spherical trigonometry, state management reaktif di Flutter/Dart, dan audio engine low-latency.",
-        impact:
-          "Kalkulasi astronomis waktu sholat presisi koordinat lokal terverifikasi Kemenag RI dengan kompas kiblat real-time dan audio low-latency.",
-      },
+      summary:
+        "Aplikasi jadwal sholat dan penunjuk arah kiblat lintas platform (Flutter & Web) dengan algoritma trigonometri bola astronomis, sensor magnetometer, dan sinkronisasi data Kemenag RI.",
+      highlights: [
+        "Kalkulasi astronomis waktu sholat presisi koordinat lokal",
+        "Penghitungan azimuth arah kiblat dari koordinat Ka'bah (21.4225° N, 39.8262° E)",
+        "Kalibrasi kompas real-time via sensor magnetometer Flutter"
+      ],
+      specType: "code",
+      specSnippet: `<span class="c-kw">import</span> <span class="c-str">'dart:math'</span> <span class="c-kw">as</span> <span class="c-var">math</span>;
+
+<span class="c-var">double</span> <span class="c-func">calculateQiblaAzimuth</span>(<span class="c-var">double</span> <span class="c-var">lat</span>, <span class="c-var">double</span> <span class="c-var">lng</span>) {
+  <span class="c-kw">const</span> <span class="c-var">mLat</span> = <span class="c-str">21.4225</span> * <span class="c-var">math</span>.<span class="c-prop">pi</span> / <span class="c-str">180.0</span>;
+  <span class="c-kw">const</span> <span class="c-var">mLng</span> = <span class="c-str">39.8262</span> * <span class="c-var">math</span>.<span class="c-prop">pi</span> / <span class="c-str">180.0</span>;
+  <span class="c-kw">final</span> <span class="c-var">phi</span> = <span class="c-var">lat</span> * <span class="c-var">math</span>.<span class="c-prop">pi</span> / <span class="c-str">180.0</span>;
+  <span class="c-kw">final</span> <span class="c-var">delta</span> = <span class="c-var">mLng</span> - (<span class="c-var">lng</span> * <span class="c-var">math</span>.<span class="c-prop">pi</span> / <span class="c-str">180.0</span>);
+
+  <span class="c-kw">final</span> <span class="c-var">y</span> = <span class="c-var">math</span>.<span class="c-func">sin</span>(<span class="c-var">delta</span>);
+  <span class="c-kw">final</span> <span class="c-var">x</span> = <span class="c-var">math</span>.<span class="c-func">cos</span>(<span class="c-var">phi</span>) * <span class="c-var">math</span>.<span class="c-func">tan</span>(<span class="c-var">mLat</span>) - <span class="c-var">math</span>.<span class="c-func">sin</span>(<span class="c-var">phi</span>) * <span class="c-var">math</span>.<span class="c-func">cos</span>(<span class="c-var">delta</span>);
+  <span class="c-kw">return</span> (<span class="c-var">math</span>.<span class="c-func">atan2</span>(<span class="c-var">y</span>, <span class="c-var">x</span>) * <span class="c-str">180.0</span> / <span class="c-var">math</span>.<span class="c-prop">pi</span> + <span class="c-str">360.0</span>) % <span class="c-str">360.0</span>;
+}`
     },
     {
       id: "web-sekolah",
@@ -164,21 +216,40 @@ const PORTFOLIO_DATA = {
       featured: false,
       repoUrl: "https://github.com/Alfianax01/web-sekolah",
       demoUrl: "https://github.com/Alfianax01/web-sekolah",
-      mockupType: "portal",
-      mockupUrl: "github.com/Alfianax01/web-sekolah",
-      tags: ["PHP", "MySQL", "Multi-Role CRUD", "Multilanguage"],
-      tabs: {
-        overview:
-          "Sistem Informasi Akademik & Manajemen Sekolah lengkap dengan dashboard multi-role (Admin, Guru, Siswa), manajemen nilai, modal CRUD interaktif, live clock, dan fitur multibahasa (Indonesia, Inggris, Jepang, Korea).",
-        architecture:
-          "PHP Native / MVC pattern terstruktur, skema database relasional MySQL yang dinormalisasi, session security hardening, serta responsive mobile-friendly dashboard.",
-        impact:
-          "Digitalisasi penuh sistem administrasi penginputan nilai dan absensi siswa dengan keamanan role terverifikasi.",
-      },
-    },
+      language: "PHP",
+      specFile: "app/Middleware/AuthRoleMiddleware.php",
+      specRuntime: "PHP 8.x / MySQL",
+      tags: ["PHP", "MySQL", "RBAC Middleware", "Session Hardening"],
+      summary:
+        "Sistem manajemen akademik dan operasional sekolah dengan manajemen peran multi-level (Admin, Guru, Siswa), pengelolaan nilai terstruktur, dan validasi sesi berkeamanan tinggi.",
+      highlights: [
+        "Kontrol akses berbasis peran (RBAC) terproteksi session token",
+        "Skema relasional ternormalisasi untuk siswa, mata pelajaran, dan nilai",
+        "Arsitektur MVC terstruktur dengan validasi dan sanitasi input"
+      ],
+      specType: "code",
+      specSnippet: `<span class="c-kw">namespace</span> <span class="c-var">App\\Middleware</span>;
+
+<span class="c-kw">class</span> <span class="c-var">AuthRoleMiddleware</span> {
+    <span class="c-kw">public static function</span> <span class="c-func">enforce</span>(<span class="c-var">array</span> <span class="c-var">$allowedRoles</span>): <span class="c-var">void</span> {
+        <span class="c-kw">if</span> (<span class="c-var">session_status</span>() === <span class="c-prop">PHP_SESSION_NONE</span>) <span class="c-var">session_start</span>();
+        <span class="c-var">$userRole</span> = <span class="c-var">$_SESSION</span>[<span class="c-str">'user'</span>][<span class="c-str">'role'</span>] ?? <span class="c-kw">null</span>;
+        <span class="c-kw">if</span> (!<span class="c-var">$userRole</span> || !<span class="c-var">in_array</span>(<span class="c-var">$userRole</span>, <span class="c-var">$allowedRoles</span>, <span class="c-kw">true</span>)) {
+            <span class="c-var">http_response_code</span>(<span class="c-str">403</span>);
+            <span class="c-var">header</span>(<span class="c-str">'Location: /login.php?error=forbidden'</span>);
+            <span class="c-kw">exit</span>;
+        }
+    }
+}`
+    }
   ],
 };
 
-// Export to window for global access
-window.PORTFOLIO_DATA = PORTFOLIO_DATA;
+// Export to window for global browser access & module.exports for testing
+if (typeof window !== "undefined") {
+  window.PORTFOLIO_DATA = PORTFOLIO_DATA;
+}
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = PORTFOLIO_DATA;
+}
 

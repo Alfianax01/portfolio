@@ -94,192 +94,122 @@ document.addEventListener("DOMContentLoaded", () => {
   let fetchedRepos = [];
   let activeCategory = "semua";
 
+  // Official GitHub Language Colors
+  const GITHUB_LANG_COLORS = {
+    TypeScript: "#3178c6",
+    JavaScript: "#f7df1e",
+    Dart: "#00b4ab",
+    PHP: "#4f5d95",
+    "C++": "#f34b7d",
+    C: "#555555",
+    Python: "#3572A5",
+    HTML: "#e34c26",
+    CSS: "#563d7c",
+    Shell: "#89e051",
+    Vue: "#41b883",
+    default: "#8b949e",
+  };
+
+  const CATEGORY_LABELS = {
+    fullstack: "Full-Stack",
+    frontend: "Frontend",
+    tool: "Security & Tooling",
+    default: "Repository",
+  };
+
   function createProjectCardElement(proj) {
     const article = document.createElement("article");
     const isFeatured = !!proj.featured;
-    article.className = `project-showcase-card ${isFeatured ? "border-beam-container" : "tilt-card"}`;
+    article.className = `project-showcase-card ${isFeatured ? "featured-project-card" : ""} tilt-card`;
     article.setAttribute("data-category", proj.category || "fullstack");
-    if (!isFeatured) article.setAttribute("data-tilt", "true");
+    article.setAttribute("data-tilt", "true");
 
-    let screenContent = "";
-    if (proj.mockupType === "dashboard") {
-      screenContent = `
-        <div class="browser-screen-content mockup-dashboard">
-          <div class="mockup-dash-nav">
-            <span class="mockup-dash-badge">${proj.title.split(" ")[0]} • Active</span>
-            <span class="mockup-dash-uptime">Production Ready</span>
-          </div>
-          <div class="mockup-stat-row">
-            <div class="mockup-mini-card">
-              <small>Stars &amp; Forks</small>
-              <strong>⭐ ${proj.stars || 0} • 🍴 ${proj.forks || 0}</strong>
-              <span class="growth-pos">GitHub Verified</span>
-            </div>
-            <div class="mockup-mini-card">
-              <small>Bahasa</small>
-              <strong>${proj.language || "TypeScript"}</strong>
-              <span class="growth-pos">Clean Code</span>
-            </div>
-          </div>
-          <div class="mockup-chart-visual">
-            <div class="chart-bar" style="--bar-h: 30%"></div>
-            <div class="chart-bar" style="--bar-h: 55%"></div>
-            <div class="chart-bar" style="--bar-h: 75%"></div>
-            <div class="chart-bar highlight" style="--bar-h: 98%"></div>
-            <div class="chart-bar" style="--bar-h: 88%"></div>
-            <div class="chart-bar" style="--bar-h: 92%"></div>
-          </div>
-        </div>
-      `;
-    } else if (proj.mockupType === "cli") {
-      screenContent = `
-        <div class="browser-screen-content mockup-terminal-ui">
-          <div class="cli-row"><span class="c-kw">RUN</span> ${proj.id || "tool"} scan --target enterprise.domain</div>
-          <div class="cli-row"><span class="c-str">[MODULES]:</span> ThreatIntel, SSL/TLS, DNS, Operator GEO</div>
-          <div class="cli-row"><span class="c-comment">[AUDIT]:</span> SSL A+ Valid | DNSSEC Active | Zero Leak</div>
-          <div class="cli-row"><span class="c-var">[RESULT]:</span> Target infrastructure clean &amp; compliant (18ms)</div>
-        </div>
-      `;
-    } else if (proj.mockupType === "streaming") {
-      screenContent = `
-        <div class="browser-screen-content mockup-dashboard" style="background:#090b10">
-          <div class="mockup-dash-nav">
-            <span class="mockup-dash-badge" style="background:rgba(239,68,68,0.2);color:#f87171">60 FPS Ultra HD</span>
-            <span class="mockup-dash-uptime">TMDb Sync Active</span>
-          </div>
-          <div class="mockup-stat-row">
-            <div class="mockup-mini-card">
-              <small>Katalog &amp; Media</small>
-              <strong>12,500+ Judul</strong>
-              <span class="growth-pos">Sub Indo Mulus</span>
-            </div>
-            <div class="mockup-mini-card">
-              <small>Multi-Server Latency</small>
-              <strong>12ms CDN</strong>
-              <span class="growth-pos">Zero Buffering</span>
-            </div>
-          </div>
-        </div>
-      `;
-    } else if (proj.mockupType === "islamic") {
-      screenContent = `
-        <div class="browser-screen-content mockup-dashboard" style="background:#091410">
-          <div class="mockup-dash-nav">
-            <span class="mockup-dash-badge" style="background:rgba(16,185,129,0.2);color:#34d399">Al-Waqt • Geodesic</span>
-            <span class="mockup-dash-uptime">Kemenag RI API</span>
-          </div>
-          <div class="mockup-stat-row">
-            <div class="mockup-mini-card">
-              <small>Arah Kiblat</small>
-              <strong>295.1° Presisi</strong>
-              <span class="growth-pos">Magnetometer</span>
-            </div>
-            <div class="mockup-mini-card">
-              <small>Waktu Sholat</small>
-              <strong>Jadwal Akurat</strong>
-              <span class="growth-pos">Auto Adzan Audio</span>
-            </div>
-          </div>
-        </div>
-      `;
-    } else if (proj.mockupType === "portal") {
-      screenContent = `
-        <div class="browser-screen-content mockup-dashboard">
-          <div class="mockup-dash-nav">
-            <span class="mockup-dash-badge" style="background:rgba(6,182,212,0.2);color:#38bdf8">Portal Akademik</span>
-            <span class="mockup-dash-uptime">Multi-Role CRUD</span>
-          </div>
-          <div class="mockup-stat-row">
-            <div class="mockup-mini-card">
-              <small>Roles Sistem</small>
-              <strong>Admin • Guru • Siswa</strong>
-              <span class="growth-pos">Session Hardened</span>
-            </div>
-            <div class="mockup-mini-card">
-              <small>Dukungan Bahasa</small>
-              <strong>ID / EN / JP / KR</strong>
-              <span class="growth-pos">Multi-Language</span>
-            </div>
-          </div>
-        </div>
-      `;
-    } else {
-      screenContent = `
-        <div class="browser-screen-content mockup-dashboard">
-          <div class="mockup-dash-nav">
-            <span class="mockup-dash-badge">${proj.title}</span>
-            <span class="mockup-dash-uptime">Active Build</span>
-          </div>
-          <div class="mockup-stat-row">
-            <div class="mockup-mini-card">
-              <small>Kategori</small>
-              <strong>${(proj.category || "Fullstack").toUpperCase()}</strong>
-            </div>
-            <div class="mockup-mini-card">
-              <small>Bahasa</small>
-              <strong>${proj.language || "Code"}</strong>
-            </div>
-          </div>
-        </div>
-      `;
-    }
+    const lang = proj.language || "TypeScript";
+    const langColor = GITHUB_LANG_COLORS[lang] || GITHUB_LANG_COLORS.default;
+    const catLabel = CATEGORY_LABELS[proj.category] || CATEGORY_LABELS.default;
 
-    const tagsHtml = (proj.tags || []).map((t) => `<span class="tech-tag">${t}</span>`).join("");
+    const tagsHtml = (proj.tags || [])
+      .map((t) => `<span class="tech-tag">${t}</span>`)
+      .join("");
+
+    const highlightsHtml = (proj.highlights || [])
+      .map(
+        (h) => `
+        <li class="project-highlight-item">
+          <svg class="highlight-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          <span>${h}</span>
+        </li>
+      `
+      )
+      .join("");
+
+    const fileIconSvg =
+      proj.specType === "cli"
+        ? `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>`
+        : `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
 
     article.innerHTML = `
-      ${isFeatured ? '<div class="border-beam" aria-hidden="true"></div>' : ""}
       <div class="project-card-grid">
-        <div class="project-mockup-wrapper">
-          <div class="browser-window">
-            <div class="browser-topbar">
-              <div class="browser-traffic-lights">
-                <span class="light red"></span>
-                <span class="light yellow"></span>
-                <span class="light green"></span>
-              </div>
-              <div class="browser-address-bar">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                <span>https://${proj.mockupUrl || "github.com/Alfianax01"}</span>
-              </div>
-            </div>
-            ${screenContent}
-          </div>
-        </div>
-
         <div class="project-details-wrapper">
-          ${isFeatured ? `
-            <div class="project-featured-tag">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              <span>Featured Project</span>
+          <div class="project-meta-header">
+            <div class="project-lang-indicator" title="Bahasa Utama">
+              <span class="lang-dot" style="background-color: ${langColor}"></span>
+              <span class="lang-label">${lang}</span>
             </div>
-          ` : ""}
-          <h3 class="project-title">${proj.title}</h3>
-
-          <div class="project-tabs-control" data-project="${proj.id}">
-            <button class="proj-tab-btn active" data-tab="overview">Overview</button>
-            <button class="proj-tab-btn" data-tab="architecture">Tech Stack</button>
-            <button class="proj-tab-btn" data-tab="impact">Key Impact</button>
+            <span class="project-cat-chip">${catLabel}</span>
+            ${isFeatured ? '<span class="featured-indicator">★ Unggulan</span>' : ""}
+            <div class="project-telemetry">
+              <span class="telemetry-pill" title="GitHub Stars">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <span>${proj.stars || 0}</span>
+              </span>
+              <span class="telemetry-pill" title="GitHub Forks">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><path d="M18 9v1a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V9"/><path d="M12 12v3"/></svg>
+                <span>${proj.forks || 0}</span>
+              </span>
+            </div>
           </div>
 
-          <div class="project-tab-panels">
-            <div class="tab-panel active" data-panel="overview">
-              <p class="project-description">${proj.tabs?.overview || proj.description || ""}</p>
-            </div>
-            <div class="tab-panel" data-panel="architecture">
-              <p class="project-description">${proj.tabs?.architecture || "Dibangun dengan standar kode bersih dan arsitektur modular."}</p>
-            </div>
-            <div class="tab-panel" data-panel="impact">
-              <p class="project-description">${proj.tabs?.impact || "Terbuka di GitHub dengan kode sumber terverifikasi."}</p>
-            </div>
+          <h3 class="project-title">${proj.title}</h3>
+          <p class="project-summary">${proj.summary || proj.tabs?.overview || proj.description || ""}</p>
+
+          <div class="project-spec-points">
+            <h4 class="spec-points-title">Spesifikasi Arsitektur:</h4>
+            <ul class="project-highlights-list">
+              ${highlightsHtml}
+            </ul>
           </div>
 
           <div class="project-tags">${tagsHtml}</div>
 
           <div class="project-action-links">
-            <a href="${proj.repoUrl}" class="btn-link-action" target="_blank" rel="noopener">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55 0-.27-.01-1.19-.02-2.16-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.7 1.25 3.35.96.1-.75.4-1.25.72-1.54-2.55-.29-5.23-1.28-5.23-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18.92-.26 1.91-.39 2.89-.39s1.97.13 2.89.39c2.21-1.49 3.18-1.18 3.18-1.18.63 1.59.23 2.76.11 3.05.74.8 1.19 1.83 1.19 3.09 0 4.42-2.69 5.39-5.25 5.68.41.35.78 1.05.78 2.12 0 1.53-.01 2.77-.01 3.15 0 .3.21.67.8.55A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/></svg>
-              <span>Lihat Repositori</span>
+            <a href="${proj.repoUrl}" class="btn-action-primary" target="_blank" rel="noopener">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55 0-.27-.01-1.19-.02-2.16-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.7 1.25 3.35.96.1-.75.4-1.25.72-1.54-2.55-.29-5.23-1.28-5.23-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18.92-.26 1.91-.39 2.89-.39s1.97.13 2.89.39c2.21-1.49 3.18-1.18 3.18-1.18.63 1.59.23 2.76.11 3.05.74.8 1.19 1.83 1.19 3.09 0 4.42-2.69 5.39-5.25 5.68.41.35.78 1.05.78 2.12 0 1.53-.01 2.77-.01 3.15 0 .3.21.67.8.55A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/></svg>
+              <span>Kode Sumber</span>
             </a>
+            ${
+              proj.demoUrl && proj.demoUrl !== proj.repoUrl
+                ? `
+              <a href="${proj.demoUrl}" class="btn-action-secondary" target="_blank" rel="noopener">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                <span>Demo Langsung</span>
+              </a>
+            `
+                : ""
+            }
+          </div>
+        </div>
+
+        <div class="project-spec-panel" aria-label="Snapshot Arsitektur Kode">
+          <div class="spec-panel-header">
+            <div class="spec-file-info">
+              ${fileIconSvg}
+              <span class="spec-file-path">${proj.specFile || "src/index.ts"}</span>
+            </div>
+            <span class="spec-runtime-chip">${proj.specRuntime || "Architecture Spec"}</span>
+          </div>
+          <div class="spec-code-wrapper">
+            <pre class="spec-code-block"><code>${proj.specSnippet || ""}</code></pre>
           </div>
         </div>
       </div>
@@ -467,24 +397,38 @@ document.addEventListener("DOMContentLoaded", () => {
           const tags = [r.language || "Open Source"].concat(r.topics || []);
           if (tags.length < 3) tags.push("GitHub Repo");
 
+          const updatedYear = r.updated_at ? new Date(r.updated_at).getFullYear() : 2026;
+          const displayLang = r.language || "Code";
+
           return {
             id: r.name.toLowerCase(),
             title: r.name.replace(/[-_]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
             category: cat,
             featured: false,
-            mockupType: "dashboard",
-            mockupUrl: (r.html_url || "").replace("https://", ""),
-            stars: r.stargazers_count,
-            forks: r.forks_count,
-            language: r.language || "Code",
-            tags: tags.slice(0, 4),
-            tabs: {
-              overview: r.description || "Repositori publik resmi dari akun GitHub @Alfianax01.",
-              architecture: `Dibangun menggunakan ${r.language || "arsitektur modular"}, terintegrasi dengan Git workflow.`,
-              impact: `Dikelola secara terbuka di GitHub dengan ${r.stargazers_count} stars dan ${r.forks_count} forks.`,
-            },
             repoUrl: r.html_url,
             demoUrl: r.homepage || r.html_url,
+            stars: r.stargazers_count,
+            forks: r.forks_count,
+            language: displayLang,
+            specFile: "metadata.json",
+            specRuntime: `${displayLang} / Git`,
+            tags: tags.slice(0, 4),
+            summary: r.description || "Repositori kode publik dari profil GitHub resmi @Alfianax01.",
+            highlights: [
+              `Cabang aktif: ${r.default_branch || "main"} (${r.visibility || "public"})`,
+              `Aktivitas sinkronisasi repositori tahun ${updatedYear}`,
+              `Kode sumber terbuka tersedia di GitHub`,
+            ],
+            specType: "code",
+            specSnippet: `<span class="c-comment">// Repositori Publik GitHub @Alfianax01</span>
+{
+  <span class="c-prop">"name"</span>: <span class="c-str">"${r.name}"</span>,
+  <span class="c-prop">"language"</span>: <span class="c-str">"${displayLang}"</span>,
+  <span class="c-prop">"default_branch"</span>: <span class="c-str">"${r.default_branch || "main"}"</span>,
+  <span class="c-prop">"stars"</span>: <span class="c-var">${r.stargazers_count || 0}</span>,
+  <span class="c-prop">"forks"</span>: <span class="c-var">${r.forks_count || 0}</span>,
+  <span class="c-prop">"open_issues"</span>: <span class="c-var">${r.open_issues_count || 0}</span>
+}`,
           };
         });
 
