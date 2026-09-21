@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portofolio Alfian (Alfianax01) — Software Engineer & Full-Stack Developer spesialis web modern, mobile Flutter, dan cybersecurity intel.">
+  <title>Alfian (Alfianax01) | Software Engineer &amp; Full-Stack Developer</title>
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+  <!-- Google Fonts: Plus Jakarta Sans, Inter, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Scroll Progress Indicator -->
+  <div id="scroll-progress" class="scroll-progress-bar" aria-hidden="true"></div>
+
+  <!-- Ambient Cursor Light Glow -->
+  <div id="cursor-glow" class="ambient-cursor-glow" aria-hidden="true"></div>
+
+  <!-- Floating Glass Capsule Dock (Navbar) -->
+  <header class="navbar-wrapper">
+    <div class="container nav-container">
+      <nav class="capsule-dock" aria-label="Navigasi Utama">
+        <a href="#beranda" class="dock-logo" aria-label="Beranda">
+          <span class="logo-symbol">&lt;/&gt;</span>
+          <span class="logo-text">alfian<span class="logo-accent">.dev</span></span>
+        </a>
+
+        <!-- Sliding active indicator pill -->
+        <div class="nav-links-wrap" id="nav-menu">
+          <span class="sliding-pill" id="sliding-pill" aria-hidden="true"></span>
+          <a href="#beranda" class="nav-link active" data-nav="beranda">Beranda</a>
+          <a href="#tentang" class="nav-link" data-nav="tentang">Tentang</a>
+          <a href="#skill" class="nav-link" data-nav="skill">Keahlian</a>
+          <a href="#proyek" class="nav-link" data-nav="proyek">Proyek</a>
+          <a href="#kontak" class="nav-link" data-nav="kontak">Kontak</a>
+        </div>
+
+        <div class="dock-actions">
+          <!-- Live Jakarta Clock -->
+          <div class="live-clock-badge" id="live-clock" title="Waktu Lokal Jakarta (WIB)">
+            <span class="clock-dot"></span>
+            <span class="clock-text">Jakarta • 00:00:00 WIB</span>
+          </div>
+
+          <!-- Command Palette Trigger Button -->
+          <button id="cmd-trigger-btn" class="dock-btn cmd-badge-btn" aria-label="Buka Command Palette (Ctrl+K)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <span class="cmd-shortcut-key"><kbd>Ctrl</kbd> <kbd>K</kbd></span>
+          </button>
+
+          <!-- Theme Toggle -->
+          <button id="theme-toggle" class="dock-btn icon-btn" aria-label="Ganti tema warna">
+            <svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            <svg class="icon-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          </button>
+
+          <!-- Mobile Hamburger -->
+          <button id="menu-toggle" class="dock-btn icon-btn menu-toggle" aria-label="Buka menu navigasi mobile" aria-expanded="false">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- =================================================================
+         SECTION 1: HERO SECTION
+         ================================================================= -->
+    <section id="beranda" class="hero-section">
+      <!-- Interactive Constellation Particles Canvas -->
+      <canvas id="hero-canvas" class="hero-canvas" aria-hidden="true"></canvas>
+
+      <div class="container hero-content-grid">
+        <div class="hero-intro-column">
+          <!-- Availability Status Ping Badge -->
+          <div class="availability-badge" data-magnetic="true">
+            <span class="radar-ping">
+              <span class="ping-circle"></span>
+              <span class="ping-dot"></span>
+            </span>
+            <span class="badge-text" id="hero-status-text">Available for freelance &amp; full-time roles</span>
+          </div>
+
+          <h1 class="hero-headline">
+            Hi, saya <span class="gradient-text">Alfian</span>.<br>
+            Building systems with <span class="gradient-text">tactile precision</span>.
+          </h1>
+
+          <p class="hero-subtext" id="hero-subtext">
+            Software Engineer &amp; Full-Stack Developer (<a href="https://github.com/Alfianax01" target="_blank" rel="noopener" class="text-link">@Alfianax01</a>). Mengembangkan ekosistem aplikasi web berkinerja tinggi, cross-platform mobile (Flutter), dan tools analitik keamanan siber (OSINT &amp; Threat Intel).
+          </p>
+
+          <div class="hero-action-buttons">
+            <a href="#proyek" class="btn btn-primary magnetic-btn" data-magnetic="true">
+              <span>Eksplorasi Proyek</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+            <a href="https://github.com/Alfianax01" target="_blank" rel="noopener" class="btn btn-secondary magnetic-btn" data-magnetic="true" aria-label="Kunjungi profil GitHub">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55 0-.27-.01-1.19-.02-2.16-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.7 1.25 3.35.96.1-.75.4-1.25.72-1.54-2.55-.29-5.23-1.28-5.23-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18.92-.26 1.91-.39 2.89-.39s1.97.13 2.89.39c2.21-1.49 3.18-1.18 3.18-1.18.63 1.59.23 2.76.11 3.05.74.8 1.19 1.83 1.19 3.09 0 4.42-2.69 5.39-5.25 5.68.41.35.78 1.05.78 2.12 0 1.53-.01 2.77-.01 3.15 0 .3.21.67.8.55A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/></svg>
+              <span>GitHub @Alfianax01</span>
+            </a>
+          </div>
+
+          <!-- Quick Metrics Bar -->
+          <div class="hero-quick-stats">
+            <div class="stat-item">
+              <span class="stat-num">9+</span>
+              <span class="stat-label">Repositori Publik</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-num">5+</span>
+              <span class="stat-label">Bahasa Pemrograman</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-num">100%</span>
+              <span class="stat-label">Clean Code Standard</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Developer Terminal -->
+        <div class="hero-terminal-column">
+          <div class="dev-terminal tilt-card" id="hero-terminal" data-tilt="true">
+            <div class="terminal-header">
+              <div class="terminal-dots">
+                <span class="dot dot-red"></span>
+                <span class="dot dot-yellow"></span>
+                <span class="dot dot-green"></span>
+              </div>
+              <div class="terminal-tabs">
+                <button class="terminal-tab active" data-tab="dev">alfian.ts</button>
+                <button class="terminal-tab" data-tab="config">profile.json</button>
+              </div>
+              <div class="terminal-actions">
+                <button id="btn-run-code" class="btn-terminal-run" title="Jalankan simulasi kompilasi">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  <span>Run Code</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="terminal-body">
+              <!-- Tab 1: alfian.ts -->
+              <div class="code-tab-content active" id="tab-dev">
+                <pre class="code-editor"><code><span class="c-kw">const</span> <span class="c-var">engineer</span> = {
+  <span class="c-prop">name</span>: <span class="c-str">"Alfian"</span>,
+  <span class="c-prop">github</span>: <span class="c-str">"https://github.com/Alfianax01"</span>,
+  <span class="c-prop">roles</span>: [<span class="c-str">"Full-Stack Dev"</span>, <span class="c-str">"Mobile (Flutter)"</span>, <span class="c-str">"OSINT Tooling"</span>],
+  <span class="c-prop">location</span>: <span class="c-str">"Jakarta, Indonesia (WIB)"</span>,
+  <span class="c-prop">status</span>: <span class="c-str">"Open for collaboration &amp; projects"</span>,
+  <span class="c-func">execute</span>: () =&gt; {
+    <span class="c-kw">return</span> <span class="c-str">"Building resilient, battle-tested software 🚀"</span>;
+  }
+};</code></pre>
+              </div>
+
+              <!-- Tab 2: profile.json -->
+              <div class="code-tab-content" id="tab-config">
+                <pre class="code-editor"><code>{
+  <span class="c-prop">"user"</span>: <span class="c-str">"Alfianax01"</span>,
+  <span class="c-prop">"repos"</span>: [<span class="c-str">"register"</span>, <span class="c-str">"secintel-toolkit"</span>, <span class="c-str">"RuangSinema"</span>, <span class="c-str">"Jam-sholat"</span>, <span class="c-str">"web-sekolah"</span>],
+  <span class="c-prop">"stack"</span>: [<span class="c-str">"TypeScript"</span>, <span class="c-str">"Flutter"</span>, <span class="c-str">"Node.js"</span>, <span class="c-str">"PHP"</span>, <span class="c-str">"C++"</span>],
+  <span class="c-prop">"philosophy"</span>: <span class="c-str">"High-Craft • Zero AI Bloat • Human-Centric"</span>
+}</code></pre>
+              </div>
+
+              <!-- Terminal Output Console -->
+              <div class="terminal-console" id="terminal-console">
+                <div class="console-prompt">
+                  <span class="prompt-sym">&gt;</span>
+                  <span class="console-msg" id="console-text">Tekan "▶ Run Code" untuk menjalankan simulasi runtime...</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================
+         SECTION 2: DOUBLE-BUFFERED INFINITE TECH MARQUEE
+         ================================================================= -->
+    <section class="marquee-section" aria-label="Teknologi dan Alat Kerja">
+      <div class="marquee-heading-wrap">
+        <p class="section-badge">BATTLE-TESTED TECH STACK</p>
+      </div>
+      <div class="marquee-viewport">
+        <div class="marquee-track" id="marquee-track">
+          <!-- Marquee populated dynamically from portfolio.data.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================
+         SECTION 3: BENTO GRID "TENTANG SAYA"
+         ================================================================= -->
+    <section id="tentang" class="section bento-section">
+      <div class="container">
+        <div class="section-header text-center">
+          <p class="section-badge">TENTANG &amp; FILOSOFI</p>
+          <h2 class="section-title">Di Balik Layar &amp; Gaya Rekayasa</h2>
+          <p class="section-subtitle">Kombinasi antara logika sistem yang kokoh dengan estetika interaksi mikro kelas tinggi.</p>
+        </div>
+
+        <div class="bento-grid">
+          <!-- Bento Card 1: Profil Alfian (Span 2) -->
+          <div class="bento-card bento-card-large tilt-card spotlight-card" data-tilt="true">
+            <div class="spotlight-glare" aria-hidden="true"></div>
+            <div class="bento-card-content">
+              <div class="bento-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </div>
+              <h3 class="bento-title">Rekayasa Tanpa "AI Slop"</h3>
+              <p class="bento-desc">
+                Setiap arsitektur kode, animasi kurva bezier, dan hierarki visual dirancang dengan pertimbangan matang. Mulai dari sistem E-Registrasi resmi bertingkat keamanan tinggi, perangkat investigasi OSINT &amp; cybersecurity, hingga platform multimedia responsif, semua dirancang dengan prinsip clean code dan zero bloat.
+              </p>
+              <div class="bento-tags">
+                <span class="badge-tag">Human-Centric</span>
+                <span class="badge-tag">Full-Stack Precision</span>
+                <span class="badge-tag">Cybersecurity Mindset</span>
+                <span class="badge-tag">60 FPS Fluid UI</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bento Card 2: Audio Equalizer (Lofi Beats) -->
+          <div class="bento-card tilt-card spotlight-card" data-tilt="true">
+            <div class="spotlight-glare" aria-hidden="true"></div>
+            <div class="bento-card-content">
+              <div class="equalizer-header">
+                <span class="lofi-dot"></span>
+                <span class="lofi-label">Currently Coding To</span>
+              </div>
+              <h4 class="lofi-track-title">Cyber Synth &amp; Ambient Chill</h4>
+              <p class="lofi-artist">Deep Focus Flow Session</p>
+
+              <!-- Animated Equalizer Bars -->
+              <div class="equalizer-bars" aria-label="Audio Visualizer">
+                <span class="bar bar-1"></span>
+                <span class="bar bar-2"></span>
+                <span class="bar bar-3"></span>
+                <span class="bar bar-4"></span>
+                <span class="bar bar-5"></span>
+                <span class="bar bar-6"></span>
+                <span class="bar bar-7"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bento Card 3: Interactive Activity Heatmap (GitHub Style) -->
+          <div class="bento-card bento-card-span-2 tilt-card spotlight-card" data-tilt="true">
+            <div class="spotlight-glare" aria-hidden="true"></div>
+            <div class="bento-card-content">
+              <div class="heatmap-header">
+                <div>
+                  <h3 class="bento-title">Aktivitas GitHub &amp; Open Source</h3>
+                  <p class="bento-desc">Konsistensi kontribusi pengembangan pada profil <a href="https://github.com/Alfianax01" target="_blank" rel="noopener" class="text-link">@Alfianax01</a>.</p>
+                </div>
+                <span class="commit-counter"><strong id="total-commits">9+ Repositori</strong> Aktif</span>
+              </div>
+              
+              <!-- Mini Contribution Grid -->
+              <div class="contribution-heatmap-wrap">
+                <div class="heatmap-grid" id="heatmap-grid" aria-label="GitHub Activity Heatmap">
+                  <!-- Generated via JavaScript -->
+                </div>
+                <div class="heatmap-legend">
+                  <span>Less</span>
+                  <span class="legend-cell lvl-0"></span>
+                  <span class="legend-cell lvl-1"></span>
+                  <span class="legend-cell lvl-2"></span>
+                  <span class="legend-cell lvl-3"></span>
+                  <span class="legend-cell lvl-4"></span>
+                  <span>More</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bento Card 4: Quality & Benchmark Metrics -->
+          <div class="bento-card tilt-card spotlight-card" data-tilt="true">
+            <div class="spotlight-glare" aria-hidden="true"></div>
+            <div class="bento-card-content">
+              <div class="bento-icon-box accent-emerald">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              </div>
+              <h3 class="bento-title">Standar Kualitas Sistem</h3>
+              <ul class="quality-metrics-list">
+                <li>
+                  <span>Lighthouse Performance</span>
+                  <span class="metric-val score-100">100 / 100</span>
+                </li>
+                <li>
+                  <span>Web Vitals (LCP / INP)</span>
+                  <span class="metric-val score-good">&lt; 0.8s</span>
+                </li>
+                <li>
+                  <span>Clean Architecture</span>
+                  <span class="metric-val score-good">Production-Ready</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================
+         SECTION 4: PILAR KEAHLIAN TEKNIS (SKILLS)
+         ================================================================= -->
+    <section id="skill" class="section section-alt">
+      <div class="container">
+        <div class="section-header text-center">
+          <p class="section-badge">CORE CAPABILITIES</p>
+          <h2 class="section-title">Pilar Keahlian Rekayasa</h2>
+          <p class="section-subtitle">Keahlian multi-disiplin mulai dari arsitektur web modern, aplikasi mobile, hingga keamanan siber.</p>
+        </div>
+
+        <div class="skill-matrix-grid" id="skills-container">
+          <!-- Populated dynamically from portfolio.data.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================
+         SECTION 5: SHOWROOM PROYEK GITHUB (ALFIANAX01)
+         ================================================================= -->
+    <section id="proyek" class="section">
+      <div class="container">
+        <div class="section-header text-center">
+          <p class="section-badge">PORTFOLIO SHOWCASE</p>
+          <h2 class="section-title">Showroom Proyek GitHub</h2>
+          <p class="section-subtitle">Karya nyata dari repositori resmi <a href="https://github.com/Alfianax01" target="_blank" rel="noopener" class="text-link">github.com/Alfianax01</a>.</p>
+        </div>
+
+        <!-- Filter Kategori Dinamis -->
+        <div class="filter-capsule-bar" id="filter-bar">
+          <button class="filter-capsule-btn active" data-filter="semua">Semua Karya</button>
+          <button class="filter-capsule-btn" data-filter="fullstack">Fullstack</button>
+          <button class="filter-capsule-btn" data-filter="frontend">Frontend &amp; Streaming</button>
+          <button class="filter-capsule-btn" data-filter="tool">Security &amp; OSINT</button>
+        </div>
+
+        <!-- Container Proyek (Populated dynamically from portfolio.data.js) -->
+        <div class="projects-showcase-list" id="project-grid">
+          <!-- Projects rendered via portfolio.data.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================
+         SECTION 6: KONTAK & TACTILE FORM
+         ================================================================= -->
+    <section id="kontak" class="section section-alt">
+      <div class="container">
+        <div class="section-header text-center">
+          <p class="section-badge">LET'S CONNECT</p>
+          <h2 class="section-title">Mulai Kolaborasi Bersama</h2>
+          <p class="section-subtitle">Tertarik membangun sistem yang tangguh, aman, dan berkelas? Mari terhubung.</p>
+        </div>
+
+        <div class="contact-tactile-layout">
+          <!-- Direct Channels -->
+          <div class="contact-info-card tilt-card" data-tilt="true">
+            <h3 class="contact-card-title">Saluran Langsung</h3>
+            <p class="contact-card-desc">
+              Respons cepat untuk diskusi proyek freelance, arsitektur sistem, kolaborasi open source, atau peluang karir.
+            </p>
+
+            <div class="direct-contact-items">
+              <div class="direct-item">
+                <div class="direct-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                </div>
+                <div class="direct-text">
+                  <small>Email</small>
+                  <strong id="contact-email-text">azmialfian487@gmail.com</strong>
+                </div>
+                <button class="btn-copy-chip copy-email-btn" data-email="azmialfian487@gmail.com" aria-label="Salin email">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                  <span>Salin</span>
+                </button>
+              </div>
+
+              <div class="direct-item">
+                <div class="direct-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </div>
+                <div class="direct-text">
+                  <small>Zona Waktu &amp; Lokasi</small>
+                  <strong>Indonesia (WIB / UTC+7)</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- Social Links Grid -->
+            <div class="contact-social-grid">
+              <a href="https://github.com/Alfianax01" target="_blank" rel="noopener" class="social-chip-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55 0-.27-.01-1.19-.02-2.16-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.7 1.25 3.35.96.1-.75.4-1.25.72-1.54-2.55-.29-5.23-1.28-5.23-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18.92-.26 1.91-.39 2.89-.39s1.97.13 2.89.39c2.21-1.49 3.18-1.18 3.18-1.18.63 1.59.23 2.76.11 3.05.74.8 1.19 1.83 1.19 3.09 0 4.42-2.69 5.39-5.25 5.68.41.35.78 1.05.78 2.12 0 1.53-.01 2.77-.01 3.15 0 .3.21.67.8.55A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/></svg>
+                <span>GitHub @Alfianax01</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Tactile Interactive Form -->
+          <div class="contact-form-card">
+            <form id="contact-form" class="tactile-form" novalidate>
+              <div class="form-group-field">
+                <label for="form-nama">Nama Anda</label>
+                <div class="input-wrapper">
+                  <input type="text" id="form-nama" name="nama" placeholder="contoh: Budi Santoso" required>
+                  <span class="field-glow"></span>
+                </div>
+              </div>
+
+              <div class="form-group-field">
+                <label for="form-email">Alamat Email</label>
+                <div class="input-wrapper">
+                  <input type="email" id="form-email" name="email" placeholder="budi@domain.com" required>
+                  <span class="field-glow"></span>
+                </div>
+              </div>
+
+              <div class="form-group-field">
+                <label for="form-pesan">Pesan atau Rencana Proyek</label>
+                <div class="input-wrapper">
+                  <textarea id="form-pesan" name="pesan" rows="4" placeholder="Ceritakan tujuan kolaborasi, timeline, atau detail proyek Anda..." required></textarea>
+                  <span class="field-glow"></span>
+                </div>
+              </div>
+
+              <div id="form-feedback" class="form-feedback-message" hidden></div>
+
+              <button type="submit" id="btn-submit-form" class="btn btn-primary btn-submit-tactile">
+                <span class="btn-text">Kirim Pesan</span>
+                <span class="btn-spinner" aria-hidden="true"></span>
+                <svg class="btn-success-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- =================================================================
+       FOOTER
+       ================================================================= -->
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <a href="#beranda" class="dock-logo">
+          <span class="logo-symbol">&lt;/&gt;</span>
+          <span>alfian<span class="logo-accent">.dev</span></span>
+        </a>
+        <p class="footer-tagline">Crafted for Alfian (<a href="https://github.com/Alfianax01" target="_blank" rel="noopener" class="text-link">@Alfianax01</a>) with fluid physics &amp; zero AI bloat.</p>
+      </div>
+
+      <div class="footer-meta">
+        <p>&copy; 2026 Alfian. Hak cipta dilindungi.</p>
+        <p class="footer-status">Designed with Plus Jakarta Sans &amp; JetBrains Mono</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =================================================================
+       COMMAND PALETTE (CTRL+K / ⌘K MODAL)
+       ================================================================= -->
+  <div id="cmd-palette" class="cmd-palette-backdrop" hidden aria-modal="true" role="dialog" aria-label="Command Palette">
+    <div class="cmd-palette-box">
+      <div class="cmd-input-header">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="cmd-search-input" placeholder="Cari aksi atau navigasi... (misal: 'proyek', 'github', 'tema')" autocomplete="off" spellcheck="false">
+        <button id="cmd-close-btn" class="cmd-close-chip" aria-label="Tutup Command Palette">ESC</button>
+      </div>
+
+      <div class="cmd-results-list" id="cmd-results">
+        <div class="cmd-category-title">Navigasi Halaman</div>
+        <div class="cmd-item" data-action="navigate" data-target="#beranda">
+          <span class="cmd-item-icon">🏠</span>
+          <span class="cmd-item-label">Menuju Beranda</span>
+          <span class="cmd-item-badge">Jump</span>
+        </div>
+        <div class="cmd-item" data-action="navigate" data-target="#tentang">
+          <span class="cmd-item-icon">👤</span>
+          <span class="cmd-item-label">Tentang Alfian &amp; Filosofi</span>
+          <span class="cmd-item-badge">Jump</span>
+        </div>
+        <div class="cmd-item" data-action="navigate" data-target="#skill">
+          <span class="cmd-item-icon">⚡</span>
+          <span class="cmd-item-label">Pilar Keahlian Teknis</span>
+          <span class="cmd-item-badge">Jump</span>
+        </div>
+        <div class="cmd-item" data-action="navigate" data-target="#proyek">
+          <span class="cmd-item-icon">🚀</span>
+          <span class="cmd-item-label">Showroom Proyek GitHub</span>
+          <span class="cmd-item-badge">Jump</span>
+        </div>
+        <div class="cmd-item" data-action="navigate" data-target="#kontak">
+          <span class="cmd-item-icon">📬</span>
+          <span class="cmd-item-label">Kontak &amp; Kolaborasi</span>
+          <span class="cmd-item-badge">Jump</span>
+        </div>
+
+        <div class="cmd-category-title">Aksi Cepat</div>
+        <div class="cmd-item" data-action="open-github">
+          <span class="cmd-item-icon">🐙</span>
+          <span class="cmd-item-label">Buka Profil GitHub @Alfianax01</span>
+          <span class="cmd-item-badge">External</span>
+        </div>
+        <div class="cmd-item" data-action="toggle-theme">
+          <span class="cmd-item-icon">🌗</span>
+          <span class="cmd-item-label">Ganti Tema (Dark / Light)</span>
+          <span class="cmd-item-badge">Action</span>
+        </div>
+        <div class="cmd-item" data-action="copy-email">
+          <span class="cmd-item-icon">📋</span>
+          <span class="cmd-item-label">Salin Alamat Email</span>
+          <span class="cmd-item-badge">Action</span>
+        </div>
+      </div>
+
+      <div class="cmd-footer-help">
+        <span>Gunakan <kbd>↑</kbd> <kbd>↓</kbd> untuk memilih</span>
+        <span><kbd>Enter</kbd> untuk eksekusi</span>
+        <span><kbd>ESC</kbd> untuk keluar</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOATING SPRING TOAST CONTAINER -->
+  <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- DATA & LOGIC SCRIPTS (Modular & Clean) -->
+  <script src="js/portfolio.data.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

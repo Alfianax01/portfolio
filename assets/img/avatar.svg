@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" width="320" height="320">
+  <defs>
+    <radialGradient id="bgGrad" cx="50%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="60%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </radialGradient>
+    <linearGradient id="glowRing" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="50%" stop-color="#818cf8"/>
+      <stop offset="100%" stop-color="#c084fc"/>
+    </linearGradient>
+    <linearGradient id="hoodie" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="face" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fed7aa"/>
+      <stop offset="100%" stop-color="#fba86b"/>
+    </linearGradient>
+    <linearGradient id="hair" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
+    <filter id="accentGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="320" height="320" rx="36" fill="url(#bgGrad)"/>
+  
+  <!-- Subtle Grid lines -->
+  <path d="M40 0v320 M80 0v320 M120 0v320 M160 0v320 M200 0v320 M240 0v320 M280 0v320" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+  <path d="M0 40h320 M0 80h320 M0 120h320 M0 160h320 M0 200h320 M0 240h320 M0 280h320" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+
+  <!-- Decorative Orbit ring -->
+  <circle cx="160" cy="160" r="130" fill="none" stroke="url(#glowRing)" stroke-width="2" stroke-dasharray="8 6" opacity="0.4"/>
+  <circle cx="250" cy="70" r="4" fill="#38bdf8" filter="url(#accentGlow)"/>
+  <circle cx="70" cy="240" r="3" fill="#c084fc" filter="url(#accentGlow)"/>
+
+  <!-- Avatar Group with Drop Shadow -->
+  <g filter="url(#shadow)">
+    <!-- Shoulders / Hoodie -->
+    <path d="M70 290 C70 240 100 215 130 210 L140 226 C146 235 174 235 180 226 L190 210 C220 215 250 240 250 290 Z" fill="url(#hoodie)"/>
+    <!-- Collar Detail -->
+    <path d="M130 210 C145 228 175 228 190 210 C175 235 145 235 130 210 Z" fill="#0f172a" opacity="0.6"/>
+    <!-- Tech Badge / Zipper line -->
+    <line x1="160" y1="230" x2="160" y2="290" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+
+    <!-- Neck -->
+    <path d="M142 185 h36 v35 h-36 z" fill="#e29158"/>
+
+    <!-- Head / Face -->
+    <rect x="120" y="105" width="80" height="92" rx="28" fill="url(#face)"/>
+
+    <!-- Ears -->
+    <rect x="110" y="132" width="14" height="26" rx="7" fill="#e29158"/>
+    <rect x="196" y="132" width="14" height="26" rx="7" fill="#e29158"/>
+
+    <!-- Headphones Band & Ear Cups -->
+    <path d="M110 138 C105 85 215 85 210 138" fill="none" stroke="#0ea5e9" stroke-width="8" stroke-linecap="round"/>
+    <rect x="105" y="125" width="14" height="34" rx="7" fill="#0284c7"/>
+    <rect x="201" y="125" width="14" height="34" rx="7" fill="#0284c7"/>
+    <circle cx="112" cy="142" r="3" fill="#38bdf8"/>
+    <circle cx="208" cy="142" r="3" fill="#38bdf8"/>
+
+    <!-- Hair -->
+    <path d="M116 115 C116 85 140 75 160 75 C185 75 204 85 204 115 C195 102 180 100 170 104 C158 108 145 98 135 106 C126 113 120 115 116 115 Z" fill="url(#hair)"/>
+
+    <!-- Glasses Frame (Smart dev look) -->
+    <rect x="126" y="128" width="30" height="20" rx="6" fill="rgba(15, 23, 42, 0.2)" stroke="#0f172a" stroke-width="3"/>
+    <rect x="164" y="128" width="30" height="20" rx="6" fill="rgba(15, 23, 42, 0.2)" stroke="#0f172a" stroke-width="3"/>
+    <line x1="156" y1="137" x2="164" y2="137" stroke="#0f172a" stroke-width="3"/>
+    <line x1="117" y1="135" x2="126" y2="137" stroke="#0f172a" stroke-width="2.5"/>
+    <line x1="194" y1="137" x2="203" y2="135" stroke="#0f172a" stroke-width="2.5"/>
+
+    <!-- Glasses Glare -->
+    <line x1="130" y1="132" x2="142" y2="144" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+    <line x1="168" y1="132" x2="180" y2="144" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+
+    <!-- Eyes -->
+    <circle cx="141" cy="138" r="3.5" fill="#0f172a"/>
+    <circle cx="179" cy="138" r="3.5" fill="#0f172a"/>
+    <circle cx="142" cy="137" r="1" fill="#fff"/>
+    <circle cx="180" cy="137" r="1" fill="#fff"/>
+
+    <!-- Eyebrows -->
+    <path d="M129 123 Q141 120 149 123" stroke="#0f172a" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    <path d="M171 123 Q179 120 191 123" stroke="#0f172a" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+
+    <!-- Nose & Smile -->
+    <path d="M158 147 Q160 152 163 151" stroke="#d97706" stroke-width="2" stroke-linecap="round" fill="none"/>
+    <path d="M148 165 Q160 174 172 165" stroke="#9a3412" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  </g>
+
+  <!-- Laptop Glow reflection on bottom border -->
+  <path d="M90 305 L230 305 L215 288 L105 288 Z" fill="#38bdf8" opacity="0.2" filter="url(#accentGlow)"/>
+  <path d="M96 302 L224 302 L212 290 L108 290 Z" fill="#1e293b"/>
+  <line x1="140" y1="296" x2="180" y2="296" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+
+  <!-- Code / Tech floating chips -->
+  <g transform="translate(24, 60)">
+    <rect width="68" height="26" rx="8" fill="#1e293b" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+    <text x="34" y="17" fill="#38bdf8" font-family="monospace" font-size="11" font-weight="bold" text-anchor="middle">&lt;dev/&gt;</text>
+  </g>
+  <g transform="translate(230, 215)">
+    <rect width="68" height="26" rx="8" fill="#1e293b" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+    <circle cx="14" cy="13" r="4" fill="#22c55e"/>
+    <text x="42" y="17" fill="#e2e8f0" font-family="sans-serif" font-size="10" font-weight="600" text-anchor="middle">Online</text>
+  </g>
+</svg>
