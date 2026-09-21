@@ -83,6 +83,9 @@ html {
   scroll-padding-top: calc(var(--nav-height) + 24px);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  overflow-x: clip;
+  max-width: 100vw;
 }
 
 body {
@@ -91,6 +94,8 @@ body {
   font-family: var(--font-body);
   line-height: 1.65;
   overflow-x: hidden;
+  overflow-x: clip;
+  max-width: 100vw;
   position: relative;
   min-height: 100vh;
   transition: background-color 0.3s ease, color 0.3s ease;
@@ -977,6 +982,9 @@ html[data-theme="light"] .terminal-console {
 
 .contribution-heatmap-wrap {
   margin-top: auto;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 6px;
 }
 
 .heatmap-grid {
@@ -985,6 +993,7 @@ html[data-theme="light"] .terminal-console {
   grid-template-rows: repeat(5, 1fr);
   gap: 4px;
   margin-bottom: 12px;
+  min-width: 320px;
 }
 
 .heatmap-cell {
@@ -2021,15 +2030,165 @@ html[data-theme="light"] .cmd-close-chip {
   }
 }
 
-/* ---------- RESPONSIVE BREAKPOINTS ---------- */
-@media (max-width: 960px) {
+/* ---------- RESPONSIVE BREAKPOINTS (5-TIER CONTINUOUS REFLOW) ---------- */
+
+/* ==========================================================================
+   TIER 1: LAPTOPS & TABLET LANDSCAPE (max-width: 1024px)
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .container {
+    width: min(100% - 48px, 1024px);
+  }
+
+  .section {
+    padding-block: 76px 60px;
+  }
+
   .hero-content-grid {
     grid-template-columns: 1fr;
     gap: 40px;
   }
 
+  .hero-intro-column {
+    max-width: 680px;
+  }
+
+  .bento-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+
+  .bento-card-large {
+    grid-column: span 2;
+  }
+
+  .bento-card-span-2 {
+    grid-column: span 2;
+  }
+
+  .project-card-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .contact-tactile-layout {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+/* ==========================================================================
+   TIER 2: TABLETS PORTRAIT & PHABLETS (max-width: 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+  :root {
+    --nav-height: 56px;
+  }
+
+  .container {
+    width: min(100% - 32px, 768px);
+  }
+
+  .section {
+    padding-block: 64px 44px;
+  }
+
+  .section-header {
+    margin-bottom: 36px;
+  }
+
+  /* Floating Dock & Mobile Navigation Menu */
+  .navbar-wrapper {
+    top: 12px;
+  }
+
+  .nav-container {
+    position: relative;
+    width: 100%;
+  }
+
+  .capsule-dock {
+    width: 100%;
+    justify-content: space-between;
+    padding: 6px 12px;
+    gap: 8px;
+  }
+
+  .live-clock-badge {
+    display: none;
+  }
+
+  .menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 38px;
+    min-height: 38px;
+  }
+
+  .nav-links-wrap {
+    display: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    padding: 10px;
+    background: var(--color-surface-solid);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+    gap: 4px;
+    z-index: 1000;
+  }
+
+  .nav-links-wrap.open {
+    display: flex;
+    animation: cmd-scale-in 0.2s var(--ease-spring);
+  }
+
+  .sliding-pill {
+    display: none !important;
+  }
+
+  .nav-link {
+    width: 100%;
+    padding: 11px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 0.92rem;
+  }
+
+  .nav-link.active,
+  .nav-link:hover {
+    background: var(--color-surface-hover);
+  }
+
+  /* Hero Section */
+  .hero-section {
+    min-height: auto;
+    padding-top: calc(var(--nav-height) + 40px);
+    padding-bottom: 40px;
+  }
+
+  .hero-headline {
+    font-size: clamp(2rem, 5.6vw, 2.8rem);
+    margin-bottom: 16px;
+  }
+
+  .hero-subtext {
+    font-size: 0.98rem;
+    margin-bottom: 28px;
+  }
+
+  /* Terminal without 3D perspective distortion on touch viewports */
+  .dev-terminal {
+    transform: none !important;
+  }
+
+  /* Bento Grid */
   .bento-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
   }
 
   .bento-card-large,
@@ -2037,54 +2196,366 @@ html[data-theme="light"] .cmd-close-chip {
     grid-column: span 1;
   }
 
-  .project-card-grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
+  .bento-card {
+    padding: 22px 18px;
   }
 
-  .contact-tactile-layout {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 768px) {
-  .nav-links-wrap {
-    display: none;
-    position: absolute;
-    top: calc(100% + 12px);
-    left: 0;
-    right: 0;
-    flex-direction: column;
-    padding: 12px;
-    background: var(--color-surface-solid);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-subtle);
+  /* Project Showcase Cards */
+  .project-showcase-card {
+    padding: 22px 18px;
   }
 
-  .nav-links-wrap.open {
-    display: flex;
+  .projects-showcase-list {
+    gap: 28px;
   }
 
-  .menu-toggle {
-    display: inline-flex;
+  .project-spec-panel {
+    min-height: 200px;
+    max-height: 280px;
   }
 
-  .live-clock-badge {
-    display: none;
+  /* Contact & Form Inputs (iOS 16px zoom prevention) */
+  .contact-info-card,
+  .contact-form-card {
+    padding: 24px 18px;
   }
 
-  .hero-headline {
-    font-size: 2.2rem;
+  .input-wrapper input,
+  .input-wrapper textarea {
+    font-size: 16px !important;
   }
 
+  /* Footer */
   .footer-content {
     flex-direction: column;
     align-items: flex-start;
+    gap: 16px;
   }
 
   .footer-meta {
     text-align: left;
+  }
+}
+
+/* ==========================================================================
+   TIER 3: STANDARD SMARTPHONES (max-width: 576px)
+   ========================================================================== */
+@media (max-width: 576px) {
+  .container {
+    width: min(100% - 24px, 576px);
+  }
+
+  .section {
+    padding-block: 52px 36px;
+  }
+
+  /* Capsule Dock elements */
+  .capsule-dock {
+    padding: 5px 10px;
+    gap: 6px;
+  }
+
+  .dock-logo {
+    padding-inline: 4px;
+    font-size: 0.9rem;
+  }
+
+  .cmd-badge-btn .cmd-shortcut-key {
+    display: none;
+  }
+
+  .cmd-badge-btn {
+    padding: 7px 9px;
+  }
+
+  .dock-btn,
+  .icon-btn,
+  .menu-toggle {
+    min-width: 40px;
+    min-height: 40px;
+  }
+
+  /* Hero Section Refinements */
+  .availability-badge {
+    font-size: 0.74rem;
+    padding: 4px 10px;
+    margin-bottom: 18px;
+  }
+
+  .hero-headline {
+    font-size: clamp(1.85rem, 7.5vw, 2.35rem);
+    line-height: 1.18;
+  }
+
+  .hero-subtext {
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+
+  .hero-action-buttons {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+
+  .hero-action-buttons .btn {
+    width: 100%;
+    justify-content: center;
+    padding: 13px 20px;
+  }
+
+  /* Hero Quick Stats (Equal 3-column mobile grid) */
+  .hero-quick-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding-top: 18px;
+    text-align: center;
+  }
+
+  .stat-divider {
+    display: none;
+  }
+
+  .stat-item {
+    align-items: center;
+  }
+
+  .stat-num {
+    font-size: 1.22rem;
+  }
+
+  .stat-label {
+    font-size: 0.68rem;
+  }
+
+  /* Dev Terminal Controls */
+  .terminal-header {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px 12px;
+  }
+
+  .terminal-dots {
+    order: 1;
+  }
+
+  .btn-terminal-run {
+    order: 2;
+    padding: 4px 8px;
+    font-size: 0.7rem;
+  }
+
+  .terminal-tabs {
+    order: 3;
+    width: 100%;
+    display: flex;
+    gap: 4px;
+    border-top: 1px solid var(--color-border);
+    padding-top: 6px;
+  }
+
+  .terminal-tab {
+    flex: 1;
+    text-align: center;
+    padding: 5px 6px;
+    font-size: 0.72rem;
+  }
+
+  .terminal-body {
+    padding: 14px 12px;
+  }
+
+  .code-editor {
+    font-size: 0.75rem;
+  }
+
+  /* Filter Capsule Bar: Native horizontal swipe with momentum scroll */
+  .filter-capsule-bar {
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 4px 2px 10px;
+    margin-bottom: 24px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .filter-capsule-bar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filter-capsule-btn {
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding: 8px 16px;
+    font-size: 0.8rem;
+    min-height: 40px;
+  }
+
+  /* Project Showcase Elements */
+  .project-title {
+    font-size: 1.18rem;
+  }
+
+  .project-summary {
+    font-size: 0.86rem;
+  }
+
+  .project-highlight-item {
+    font-size: 0.8rem;
+  }
+
+  .project-action-links {
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .project-action-links .btn-action-primary,
+  .project-action-links .btn-action-secondary {
+    width: 100%;
+    justify-content: center;
+    padding: 10px 14px;
+  }
+
+  .spec-code-wrapper {
+    padding: 10px 12px;
+  }
+
+  .spec-code-block {
+    font-size: 0.7rem;
+    line-height: 1.5;
+  }
+
+  /* Contact Social Buttons */
+  .contact-social-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .social-chip-btn {
+    justify-content: center;
+    padding: 8px 10px;
+    font-size: 0.8rem;
+  }
+
+  /* Command Palette Modal on Mobile */
+  .cmd-palette-backdrop {
+    padding-top: 8vh;
+    padding-inline: 12px;
+  }
+
+  .cmd-palette-box {
+    width: 100%;
+    max-height: 84vh;
+  }
+
+  .cmd-input-header {
+    padding: 12px 14px;
+  }
+
+  .cmd-input-header input {
+    font-size: 0.92rem;
+  }
+
+  .cmd-results-list {
+    max-height: 240px;
+  }
+
+  .cmd-footer-help {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px 14px;
+    font-size: 0.68rem;
+  }
+
+  /* Toast notification on mobile */
+  .toast-container {
+    bottom: 16px;
+    left: 12px;
+    right: 12px;
+  }
+
+  .toast-item {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.82rem;
+    padding: 10px 14px;
+  }
+}
+
+/* ==========================================================================
+   TIER 4: EXTRA SMALL DEVICES (max-width: 380px)
+   ========================================================================== */
+@media (max-width: 380px) {
+  .container {
+    width: calc(100% - 18px);
+  }
+
+  .hero-headline {
+    font-size: 1.75rem;
+    letter-spacing: -0.02em;
+  }
+
+  .hero-subtext {
+    font-size: 0.88rem;
+  }
+
+  .bento-card,
+  .project-showcase-card,
+  .contact-info-card,
+  .contact-form-card,
+  .skill-feature-card {
+    padding: 16px 12px;
+  }
+
+  .contact-card-title {
+    font-size: 1.22rem;
+  }
+
+  .direct-item {
+    padding: 10px 8px;
+    gap: 10px;
+  }
+
+  .direct-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .direct-text strong {
+    font-size: 0.82rem;
+  }
+
+  .contact-social-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tech-pill {
+    padding: 5px 12px;
+    font-size: 0.74rem;
+  }
+
+  .tech-tag {
+    font-size: 0.68rem;
+    padding: 2px 6px;
+  }
+}
+
+/* ==========================================================================
+   TOUCH DEVICE OPTIMIZATION (NO HOVER GLITCHES)
+   ========================================================================== */
+@media (hover: none) {
+  .tilt-card {
+    transform: none !important;
+  }
+
+  .spotlight-glare {
+    display: none !important;
   }
 }
 

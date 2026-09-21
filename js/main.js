@@ -535,7 +535,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Mobile Menu Toggle
   const menuToggle = document.getElementById("menu-toggle");
   if (menuToggle && navMenu) {
-    menuToggle.addEventListener("click", () => {
+    menuToggle.addEventListener("click", (e) => {
+      e.stopPropagation();
       const isOpen = navMenu.classList.toggle("open");
       menuToggle.setAttribute("aria-expanded", String(isOpen));
     });
@@ -545,6 +546,20 @@ document.addEventListener("DOMContentLoaded", () => {
         navMenu.classList.remove("open");
         menuToggle.setAttribute("aria-expanded", "false");
       });
+    });
+
+    document.addEventListener("click", (e) => {
+      if (navMenu.classList.contains("open") && !navMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+        navMenu.classList.remove("open");
+        menuToggle.setAttribute("aria-expanded", "false");
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && navMenu.classList.contains("open")) {
+        navMenu.classList.remove("open");
+        menuToggle.setAttribute("aria-expanded", "false");
+      }
     });
   }
 
@@ -745,6 +760,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const glare = card.querySelector(".spotlight-glare");
 
       card.addEventListener("pointermove", (e) => {
+        if (e.pointerType === "touch") return;
         const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
