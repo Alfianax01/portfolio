@@ -1255,6 +1255,35 @@ html[data-theme="light"] .terminal-console {
   box-shadow: 0 12px 30px -10px rgba(16, 185, 129, 0.15);
 }
 
+/* Border Beam Animation for Featured Card */
+.border-beam-container {
+  position: relative;
+}
+
+.border-beam {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  border: 1.5px solid transparent;
+  mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: destination-out;
+}
+
+.border-beam::before {
+  content: "";
+  position: absolute;
+  inset: -150%;
+  background: conic-gradient(from 0deg, transparent 0deg 300deg, #10b981 330deg, #06b6d4 360deg);
+  animation: border-beam-rotate 7s linear infinite;
+}
+
+@keyframes border-beam-rotate {
+  to { transform: rotate(360deg); }
+}
+
 .project-showcase-card.hidden {
   display: none;
 }

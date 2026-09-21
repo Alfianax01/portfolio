@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function createProjectCardElement(proj) {
     const article = document.createElement("article");
     const isFeatured = !!proj.featured;
-    article.className = `project-showcase-card ${isFeatured ? "featured-project-card" : ""} tilt-card`;
+    article.className = `project-showcase-card ${isFeatured ? "featured-project-card border-beam-container" : ""} tilt-card`;
     article.setAttribute("data-category", proj.category || "fullstack");
     article.setAttribute("data-tilt", "true");
 
@@ -149,6 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
         : `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
 
     article.innerHTML = `
+      ${isFeatured ? '<div class="border-beam" aria-hidden="true"></div>' : ""}
       <div class="project-card-grid">
         <div class="project-details-wrapper">
           <div class="project-meta-header">
@@ -171,7 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
 
           <h3 class="project-title">${proj.title}</h3>
-          <p class="project-summary">${proj.summary || proj.tabs?.overview || proj.description || ""}</p>
+          <p class="project-summary">${proj.summary || proj.description || ""}</p>
 
           <div class="project-spec-points">
             <h4 class="spec-points-title">Spesifikasi Arsitektur:</h4>
