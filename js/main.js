@@ -1023,4 +1023,172 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.style.transform = "translate(0px, 0px)";
     });
   });
+
+  /* ==========================================================
+     17. UPSCAYL-INSPIRED FLUID CHOREOGRAPHY (GSAP & SCROLLTRIGGER)
+     High-Craft, anti-slop, 60fps physics timeline system
+     ========================================================== */
+  function initUpscaylAnimations() {
+    if (typeof gsap === "undefined") return;
+
+    // Respect reduced motion accessibility
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
+
+    if (typeof ScrollTrigger !== "undefined") {
+      gsap.registerPlugin(ScrollTrigger);
+    }
+
+    // 1. Hero Entrance Timeline (Upscayl power4.out cascade)
+    const heroTl = gsap.timeline({ defaults: { ease: "power4.out" } });
+
+    const heroTitle = document.getElementById("hero-title");
+    const heroSubtext = document.getElementById("hero-subtext");
+    const heroAnnouncement = document.getElementById("hero-announcement");
+    const heroButtons = document.getElementById("hero-buttons");
+    const heroStats = document.getElementById("hero-stats");
+    const heroTerminal = document.getElementById("hero-terminal");
+    const heroScrollCue = document.querySelector(".hero-scroll-cue-wrapper");
+
+    if (heroTitle) {
+      heroTl.from(heroTitle, { y: 60, opacity: 0, duration: 1.1 });
+    }
+    if (heroSubtext) {
+      heroTl.from(heroSubtext, { y: 40, opacity: 0, duration: 1 }, "-=0.7");
+    }
+    if (heroAnnouncement) {
+      heroTl.from(heroAnnouncement, { scale: 0.8, opacity: 0, duration: 0.6, ease: "back.out(1.7)" }, "-=0.6");
+    }
+    if (heroButtons) {
+      heroTl.from(heroButtons, { y: 30, opacity: 0, duration: 0.85 }, "-=0.6");
+    }
+    if (heroStats) {
+      heroTl.from(heroStats, { y: 20, opacity: 0, duration: 0.85 }, "-=0.6");
+    }
+    if (heroTerminal) {
+      heroTl.from(heroTerminal, { y: 45, opacity: 0, duration: 1.2, ease: "power3.out" }, "-=0.8");
+    }
+    if (heroScrollCue) {
+      heroTl.from(heroScrollCue, { opacity: 0, y: 15, duration: 0.8 }, "-=0.4");
+    }
+
+    // 2. Chromatic Keyword Text Cycle (Upscayl #text-linux, #text-macos, #text-windows loop)
+    const textWeb = document.getElementById("text-web");
+    const textMobile = document.getElementById("text-mobile");
+    const textSecurity = document.getElementById("text-security");
+
+    if (textWeb && textMobile && textSecurity) {
+      const chromaTl = gsap.timeline({ repeat: -1 });
+      chromaTl
+        .to(textWeb, {
+          duration: 1.1,
+          color: "#10b981",
+          textShadow: "0 0 16px rgba(16, 185, 129, 0.45)",
+          ease: "power4.inOut",
+        })
+        .to(textWeb, {
+          duration: 1.1,
+          color: "",
+          textShadow: "none",
+          ease: "power4.inOut",
+        })
+        .to(textMobile, {
+          duration: 1.1,
+          color: "#06b6d4",
+          textShadow: "0 0 16px rgba(6, 182, 212, 0.45)",
+          ease: "power4.inOut",
+        })
+        .to(textMobile, {
+          duration: 1.1,
+          color: "",
+          textShadow: "none",
+          ease: "power4.inOut",
+        })
+        .to(textSecurity, {
+          duration: 1.1,
+          color: "#f59e0b",
+          textShadow: "0 0 16px rgba(245, 158, 11, 0.45)",
+          ease: "power4.inOut",
+        })
+        .to(textSecurity, {
+          duration: 1.1,
+          color: "",
+          textShadow: "none",
+          ease: "power4.inOut",
+        });
+    }
+
+    // 3. ScrollTrigger Section Header Revelations
+    if (typeof ScrollTrigger !== "undefined") {
+      document.querySelectorAll(".section-header").forEach((header) => {
+        gsap.from(header.children, {
+          scrollTrigger: {
+            trigger: header,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
+          stagger: 0.15,
+          scaleY: 1.05,
+          opacity: 0,
+          y: 35,
+          duration: 0.9,
+          ease: "power4.out",
+        });
+      });
+
+      // Bento cards staggered cascade
+      const bentoGrid = document.querySelector(".bento-grid");
+      if (bentoGrid) {
+        gsap.from(".bento-card", {
+          scrollTrigger: {
+            trigger: bentoGrid,
+            start: "top 80%",
+            toggleActions: "play none none none",
+          },
+          stagger: 0.12,
+          opacity: 0,
+          y: 40,
+          duration: 0.85,
+          ease: "power4.out",
+        });
+      }
+
+      // Skill cards staggered cascade
+      const skillsContainer = document.getElementById("skills-container");
+      if (skillsContainer) {
+        gsap.from(".skill-feature-card", {
+          scrollTrigger: {
+            trigger: skillsContainer,
+            start: "top 80%",
+            toggleActions: "play none none none",
+          },
+          stagger: 0.1,
+          opacity: 0,
+          y: 35,
+          duration: 0.8,
+          ease: "power4.out",
+        });
+      }
+
+      // Contact layout reveal
+      const contactLayout = document.querySelector(".contact-tactile-layout");
+      if (contactLayout) {
+        gsap.from(contactLayout.children, {
+          scrollTrigger: {
+            trigger: contactLayout,
+            start: "top 80%",
+            toggleActions: "play none none none",
+          },
+          stagger: 0.2,
+          opacity: 0,
+          y: 35,
+          duration: 0.85,
+          ease: "power4.out",
+        });
+      }
+    }
+  }
+
+  // Initialize Upscayl-style animation engine
+  initUpscaylAnimations();
 });

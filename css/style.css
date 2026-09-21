@@ -487,6 +487,41 @@ html[data-theme="light"] .icon-moon { display: none; }
   box-shadow: 0 8px 24px var(--color-emerald-glow);
 }
 
+/* Upscayl-Inspired Shine Button Border */
+.btn-primary.shine-btn {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.btn-shine-glow {
+  position: absolute;
+  inset: -150%;
+  background: conic-gradient(from 0deg, transparent 0deg 320deg, rgba(255, 255, 255, 0.4) 345deg, transparent 360deg);
+  animation: shine-sweep 5s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.btn-primary.shine-btn span,
+.btn-primary.shine-btn svg {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes shine-sweep {
+  to { transform: rotate(360deg); }
+}
+
+/* Upscayl-Inspired Chromatic Accent Keywords */
+.chroma-keyword {
+  font-weight: 600;
+  display: inline-block;
+  color: var(--color-text-primary);
+  transition: color 0.4s ease, text-shadow 0.4s ease;
+  will-change: color, text-shadow;
+}
+
 .btn-secondary {
   background: var(--color-surface-solid);
   color: var(--color-text-primary);
@@ -532,6 +567,52 @@ html[data-theme="light"] .icon-moon { display: none; }
   width: 1px;
   height: 28px;
   background: var(--color-border);
+}
+
+/* Upscayl-Style Bouncing Scroll Cue Indicator */
+.hero-scroll-cue-wrapper {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  pointer-events: auto;
+}
+
+.hero-scroll-cue {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.hero-scroll-cue:hover {
+  color: var(--color-emerald);
+  transform: translateY(-2px);
+}
+
+.scroll-arrow-bounce {
+  color: var(--color-emerald);
+  animation: upscayl-arrow-bounce 2s ease-in-out infinite;
+}
+
+@keyframes upscayl-arrow-bounce {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateY(8px);
+    opacity: 1;
+  }
 }
 
 /* ---------- INTERACTIVE DEVELOPER TERMINAL ---------- */
@@ -762,6 +843,52 @@ html[data-theme="light"] .terminal-console {
 }
 
 @keyframes marquee-scroll {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+
+/* ---------- UPSCAYL-STYLE GIANT KINETIC BRAND TYPOGRAPHY ---------- */
+.kinetic-brand-strip {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding-block: 24px;
+  pointer-events: none;
+  user-select: none;
+  mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+  background: transparent;
+  margin-block: 10px;
+}
+
+.kinetic-brand-track {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  width: max-content;
+  font-family: var(--font-heading);
+  font-size: clamp(3.2rem, 7.5vw, 6rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 1.2px rgba(255, 255, 255, 0.07);
+  animation: kinetic-brand-scroll 45s linear infinite;
+  will-change: transform;
+}
+
+html[data-theme="light"] .kinetic-brand-track {
+  -webkit-text-stroke: 1.2px rgba(15, 23, 42, 0.07);
+}
+
+.brand-divider {
+  font-size: 0.45em;
+  color: var(--color-emerald);
+  opacity: 0.4;
+}
+
+@keyframes kinetic-brand-scroll {
   0% { transform: translate3d(0, 0, 0); }
   100% { transform: translate3d(-50%, 0, 0); }
 }
@@ -2030,6 +2157,8 @@ html[data-theme="light"] .cmd-close-chip {
   }
 }
 
+/* ---------- RESPONSIVE BREAKPOINTS ---------- */
+@media (max-width: 960px) {
 /* ---------- RESPONSIVE BREAKPOINTS (5-TIER CONTINUOUS REFLOW) ---------- */
 
 /* ==========================================================================
@@ -2054,20 +2183,24 @@ html[data-theme="light"] .cmd-close-chip {
   }
 
   .bento-grid {
+    grid-template-columns: 1fr;
     grid-template-columns: repeat(2, 1fr);
     gap: 18px;
   }
 
+  .bento-card-large,
   .bento-card-large {
     grid-column: span 2;
   }
 
   .bento-card-span-2 {
+    grid-column: span 1;
     grid-column: span 2;
   }
 
   .project-card-grid {
     grid-template-columns: 1fr;
+    gap: 24px;
     gap: 28px;
   }
 
@@ -2129,14 +2262,17 @@ html[data-theme="light"] .cmd-close-chip {
   .nav-links-wrap {
     display: none;
     position: absolute;
+    top: calc(100% + 12px);
     top: calc(100% + 10px);
     left: 0;
     right: 0;
     flex-direction: column;
+    padding: 12px;
     padding: 10px;
     background: var(--color-surface-solid);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
+    box-shadow: var(--shadow-subtle);
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
     gap: 4px;
     z-index: 1000;
@@ -2147,10 +2283,14 @@ html[data-theme="light"] .cmd-close-chip {
     animation: cmd-scale-in 0.2s var(--ease-spring);
   }
 
+  .menu-toggle {
+    display: inline-flex;
   .sliding-pill {
     display: none !important;
   }
 
+  .live-clock-badge {
+    display: none;
   .nav-link {
     width: 100%;
     padding: 11px 16px;
@@ -2171,6 +2311,7 @@ html[data-theme="light"] .cmd-close-chip {
   }
 
   .hero-headline {
+    font-size: 2.2rem;
     font-size: clamp(2rem, 5.6vw, 2.8rem);
     margin-bottom: 16px;
   }

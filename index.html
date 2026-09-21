@@ -76,25 +76,27 @@
 
       <div class="container hero-content-grid">
         <div class="hero-intro-column">
-          <!-- Availability Status Indicator -->
-          <div class="availability-badge">
+          <!-- Availability Status Indicator (Upscayl-style pop & pulse) -->
+          <div class="availability-badge" id="hero-announcement">
             <span class="radar-ping" aria-hidden="true">
+              <span class="ping-circle"></span>
               <span class="ping-dot"></span>
             </span>
             <span class="badge-text" id="hero-status-text">Available for freelance &amp; full-time roles</span>
           </div>
 
-          <h1 class="hero-headline">
+          <h1 class="hero-headline" id="hero-title">
             Hi, saya <span class="gradient-text">Alfian</span>.<br>
             Building systems with <span class="gradient-text">tactile precision</span>.
           </h1>
 
           <p class="hero-subtext" id="hero-subtext">
-            Software Engineer &amp; Full-Stack Developer (<a href="https://github.com/Alfianax01" target="_blank" rel="noopener" class="text-link">@Alfianax01</a>). Mengembangkan ekosistem aplikasi web berkinerja tinggi, cross-platform mobile (Flutter), dan tools analitik keamanan siber (OSINT &amp; Threat Intel).
+            Software Engineer &amp; Full-Stack Developer (<a href="https://github.com/Alfianax01" target="_blank" rel="noopener" class="text-link">@Alfianax01</a>). Mengembangkan arsitektur <span id="text-web" class="chroma-keyword">Web Modern</span>, ekosistem <span id="text-mobile" class="chroma-keyword">Mobile Flutter</span>, dan analitik <span id="text-security" class="chroma-keyword">Cybersecurity Intel</span>.
           </p>
 
-          <div class="hero-action-buttons">
-            <a href="#proyek" class="btn btn-primary magnetic-btn" data-magnetic="true">
+          <div class="hero-action-buttons" id="hero-buttons">
+            <a href="#proyek" class="btn btn-primary magnetic-btn shine-btn" data-magnetic="true">
+              <span class="btn-shine-glow" aria-hidden="true"></span>
               <span>Lihat Katalog Proyek</span>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </a>
@@ -105,7 +107,7 @@
           </div>
 
           <!-- Quick Metrics Bar -->
-          <div class="hero-quick-stats">
+          <div class="hero-quick-stats" id="hero-stats">
             <div class="stat-item">
               <span class="stat-num">9+</span>
               <span class="stat-label">Repositori Publik</span>
@@ -123,7 +125,7 @@
           </div>
         </div>
 
-        <!-- Interactive Developer Terminal Simulator (R-31 Intentional Craft: Interactive TypeScript playground & runtime execution) -->
+        <!-- Interactive Developer Terminal Simulator -->
         <div class="hero-terminal-column">
           <div class="dev-terminal tilt-card" id="hero-terminal" data-tilt="true">
             <div class="terminal-header">
@@ -180,6 +182,17 @@
           </div>
         </div>
       </div>
+
+      <!-- Upscayl-style Animated Bouncing Scroll Cue -->
+      <div class="hero-scroll-cue-wrapper">
+        <a href="#tentang" class="hero-scroll-cue" aria-label="Gulir ke konten tentang saya">
+          <span class="scroll-cue-text">Gulir untuk eksplorasi</span>
+          <svg class="scroll-arrow-bounce" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 5v14"></path>
+            <path d="m19 12-7 7-7-7"></path>
+          </svg>
+        </a>
+      </div>
     </section>
 
     <!-- =================================================================
@@ -195,6 +208,32 @@
         </div>
       </div>
     </section>
+
+    <!-- Upscayl-Style Giant Kinetic Typography Strip -->
+    <div class="kinetic-brand-strip" aria-hidden="true">
+      <div class="kinetic-brand-track">
+        <span>ALFIANAX01</span>
+        <span class="brand-divider">✦</span>
+        <span>SOFTWARE ENGINEER</span>
+        <span class="brand-divider">✦</span>
+        <span>FULL-STACK</span>
+        <span class="brand-divider">✦</span>
+        <span>FLUTTER</span>
+        <span class="brand-divider">✦</span>
+        <span>CYBERSECURITY</span>
+        <span class="brand-divider">✦</span>
+        <span>ALFIANAX01</span>
+        <span class="brand-divider">✦</span>
+        <span>SOFTWARE ENGINEER</span>
+        <span class="brand-divider">✦</span>
+        <span>FULL-STACK</span>
+        <span class="brand-divider">✦</span>
+        <span>FLUTTER</span>
+        <span class="brand-divider">✦</span>
+        <span>CYBERSECURITY</span>
+        <span class="brand-divider">✦</span>
+      </div>
+    </div>
 
     <!-- =================================================================
          SECTION 3: BENTO GRID "TENTANG SAYA"
@@ -448,6 +487,28 @@
     </section>
   </main>
 
+  <!-- Upscayl-Style Giant Kinetic Typography Strip (Pre-Footer) -->
+  <div class="kinetic-brand-strip" aria-hidden="true">
+    <div class="kinetic-brand-track">
+      <span>HIGH-CRAFT ARCHITECTURE</span>
+      <span class="brand-divider">✦</span>
+      <span>ZERO SLOP</span>
+      <span class="brand-divider">✦</span>
+      <span>TACTILE PRECISION</span>
+      <span class="brand-divider">✦</span>
+      <span>ALFIAN.DEV</span>
+      <span class="brand-divider">✦</span>
+      <span>HIGH-CRAFT ARCHITECTURE</span>
+      <span class="brand-divider">✦</span>
+      <span>ZERO SLOP</span>
+      <span class="brand-divider">✦</span>
+      <span>TACTILE PRECISION</span>
+      <span class="brand-divider">✦</span>
+      <span>ALFIAN.DEV</span>
+      <span class="brand-divider">✦</span>
+    </div>
+  </div>
+
   <!-- =================================================================
        FOOTER
        ================================================================= -->
@@ -535,6 +596,10 @@
 
   <!-- FLOATING SPRING TOAST CONTAINER -->
   <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- GSAP & ScrollTrigger Animation Core (Used in Upscayl for physics-based fluid choreography) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
   <!-- DATA & LOGIC SCRIPTS (Modular & Clean) -->
   <script src="js/portfolio.data.js"></script>
