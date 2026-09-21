@@ -88,162 +88,456 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // C. Render Projects Showcase (GitHub Projects)
+  // C. Render Projects Showcase (GitHub Projects API + Live Telemetry)
   const projectGrid = document.getElementById("project-grid");
-  if (projectGrid && data.projects) {
-    data.projects.forEach((proj) => {
-      const article = document.createElement("article");
-      const isFeatured = proj.featured;
-      article.className = `project-showcase-card ${isFeatured ? "border-beam-container" : "tilt-card"}`;
-      article.setAttribute("data-category", proj.category);
-      if (!isFeatured) article.setAttribute("data-tilt", "true");
+  const filterBar = document.getElementById("filter-bar");
+  let fetchedRepos = [];
+  let activeCategory = "semua";
 
-      // Generate realistic browser mockup based on project type
-      let screenContent = "";
-      if (proj.mockupType === "dashboard") {
-        screenContent = `
-          <div class="browser-screen-content mockup-dashboard">
-            <div class="mockup-dash-nav">
-              <span class="mockup-dash-badge">RAPIM TNI • Check-In Active</span>
-              <span class="mockup-dash-uptime">E-Ticket QR Live</span>
+  function createProjectCardElement(proj) {
+    const article = document.createElement("article");
+    const isFeatured = !!proj.featured;
+    article.className = `project-showcase-card ${isFeatured ? "border-beam-container" : "tilt-card"}`;
+    article.setAttribute("data-category", proj.category || "fullstack");
+    if (!isFeatured) article.setAttribute("data-tilt", "true");
+
+    let screenContent = "";
+    if (proj.mockupType === "dashboard") {
+      screenContent = `
+        <div class="browser-screen-content mockup-dashboard">
+          <div class="mockup-dash-nav">
+            <span class="mockup-dash-badge">${proj.title.split(" ")[0]} • Active</span>
+            <span class="mockup-dash-uptime">Production Ready</span>
+          </div>
+          <div class="mockup-stat-row">
+            <div class="mockup-mini-card">
+              <small>Stars &amp; Forks</small>
+              <strong>⭐ ${proj.stars || 0} • 🍴 ${proj.forks || 0}</strong>
+              <span class="growth-pos">GitHub Verified</span>
             </div>
-            <div class="mockup-stat-row">
-              <div class="mockup-mini-card">
-                <small>Delegasi Terverifikasi</small>
-                <strong>1,248 / 1,250</strong>
-                <span class="growth-pos">99.8% Check-in</span>
-              </div>
-              <div class="mockup-mini-card">
-                <small>Waktu Verifikasi</small>
-                <strong>1.4 detik</strong>
-                <span class="growth-pos">Presisi QR</span>
-              </div>
-            </div>
-            <div class="mockup-chart-visual">
-              <div class="chart-bar" style="--bar-h: 30%"></div>
-              <div class="chart-bar" style="--bar-h: 55%"></div>
-              <div class="chart-bar" style="--bar-h: 75%"></div>
-              <div class="chart-bar highlight" style="--bar-h: 98%"></div>
-              <div class="chart-bar" style="--bar-h: 88%"></div>
-              <div class="chart-bar" style="--bar-h: 92%"></div>
+            <div class="mockup-mini-card">
+              <small>Bahasa</small>
+              <strong>${proj.language || "TypeScript"}</strong>
+              <span class="growth-pos">Clean Code</span>
             </div>
           </div>
-        `;
-      } else if (proj.mockupType === "cli") {
-        screenContent = `
-          <div class="browser-screen-content mockup-terminal-ui">
-            <div class="cli-row"><span class="c-kw">RUN</span> secintel-toolkit scan --target enterprise.domain</div>
-            <div class="cli-row"><span class="c-str">[MODULES]:</span> ThreatIntel, SSL/TLS, DNS, Operator GEO</div>
-            <div class="cli-row"><span class="c-comment">[AUDIT]:</span> SSL A+ Valid | DNSSEC Active | Zero Leak</div>
-            <div class="cli-row"><span class="c-var">[RESULT]:</span> Target infrastructure clean &amp; compliant (18ms)</div>
+          <div class="mockup-chart-visual">
+            <div class="chart-bar" style="--bar-h: 30%"></div>
+            <div class="chart-bar" style="--bar-h: 55%"></div>
+            <div class="chart-bar" style="--bar-h: 75%"></div>
+            <div class="chart-bar highlight" style="--bar-h: 98%"></div>
+            <div class="chart-bar" style="--bar-h: 88%"></div>
+            <div class="chart-bar" style="--bar-h: 92%"></div>
           </div>
-        `;
-      } else if (proj.mockupType === "streaming") {
-        screenContent = `
-          <div class="browser-screen-content mockup-dashboard" style="background:#090b10">
-            <div class="mockup-dash-nav">
-              <span class="mockup-dash-badge" style="background:rgba(239,68,68,0.2);color:#f87171">60 FPS Ultra HD</span>
-              <span class="mockup-dash-uptime">TMDb Sync Active</span>
-            </div>
-            <div class="mockup-stat-row">
-              <div class="mockup-mini-card">
-                <small>Katalog Film &amp; Serial</small>
-                <strong>12,500+ Judul</strong>
-                <span class="growth-pos">Sub Indo Mulus</span>
-              </div>
-              <div class="mockup-mini-card">
-                <small>Multi-Server Latency</small>
-                <strong>12ms CDN</strong>
-                <span class="growth-pos">Zero Buffering</span>
-              </div>
-            </div>
+        </div>
+      `;
+    } else if (proj.mockupType === "cli") {
+      screenContent = `
+        <div class="browser-screen-content mockup-terminal-ui">
+          <div class="cli-row"><span class="c-kw">RUN</span> ${proj.id || "tool"} scan --target enterprise.domain</div>
+          <div class="cli-row"><span class="c-str">[MODULES]:</span> ThreatIntel, SSL/TLS, DNS, Operator GEO</div>
+          <div class="cli-row"><span class="c-comment">[AUDIT]:</span> SSL A+ Valid | DNSSEC Active | Zero Leak</div>
+          <div class="cli-row"><span class="c-var">[RESULT]:</span> Target infrastructure clean &amp; compliant (18ms)</div>
+        </div>
+      `;
+    } else if (proj.mockupType === "streaming") {
+      screenContent = `
+        <div class="browser-screen-content mockup-dashboard" style="background:#090b10">
+          <div class="mockup-dash-nav">
+            <span class="mockup-dash-badge" style="background:rgba(239,68,68,0.2);color:#f87171">60 FPS Ultra HD</span>
+            <span class="mockup-dash-uptime">TMDb Sync Active</span>
           </div>
-        `;
-      } else {
-        screenContent = `
-          <div class="browser-screen-content mockup-dashboard">
-            <div class="mockup-dash-nav">
-              <span class="mockup-dash-badge">${proj.title}</span>
-              <span class="mockup-dash-uptime">Active Build</span>
+          <div class="mockup-stat-row">
+            <div class="mockup-mini-card">
+              <small>Katalog &amp; Media</small>
+              <strong>12,500+ Judul</strong>
+              <span class="growth-pos">Sub Indo Mulus</span>
             </div>
-            <div class="mockup-stat-row">
-              <div class="mockup-mini-card">
-                <small>Kategori</small>
-                <strong>${proj.category.toUpperCase()}</strong>
-              </div>
-              <div class="mockup-mini-card">
-                <small>Kualitas</small>
-                <strong>Production Ready</strong>
-              </div>
-            </div>
-          </div>
-        `;
-      }
-
-      const tagsHtml = proj.tags.map((t) => `<span class="tech-tag">${t}</span>`).join("");
-
-      article.innerHTML = `
-        ${isFeatured ? '<div class="border-beam" aria-hidden="true"></div>' : ""}
-        <div class="project-card-grid">
-          <div class="project-mockup-wrapper">
-            <div class="browser-window">
-              <div class="browser-topbar">
-                <div class="browser-traffic-lights">
-                  <span class="light red"></span>
-                  <span class="light yellow"></span>
-                  <span class="light green"></span>
-                </div>
-                <div class="browser-address-bar">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                  <span>https://${proj.mockupUrl}</span>
-                </div>
-              </div>
-              ${screenContent}
-            </div>
-          </div>
-
-          <div class="project-details-wrapper">
-            ${isFeatured ? `
-              <div class="project-featured-tag">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                <span>Featured Project</span>
-              </div>
-            ` : ""}
-            <h3 class="project-title">${proj.title}</h3>
-
-            <div class="project-tabs-control" data-project="${proj.id}">
-              <button class="proj-tab-btn active" data-tab="overview">Overview</button>
-              <button class="proj-tab-btn" data-tab="architecture">Tech Stack</button>
-              <button class="proj-tab-btn" data-tab="impact">Key Impact</button>
-            </div>
-
-            <div class="project-tab-panels">
-              <div class="tab-panel active" data-panel="overview">
-                <p class="project-description">${proj.tabs.overview}</p>
-              </div>
-              <div class="tab-panel" data-panel="architecture">
-                <p class="project-description">${proj.tabs.architecture}</p>
-              </div>
-              <div class="tab-panel" data-panel="impact">
-                <p class="project-description">${proj.tabs.impact}</p>
-              </div>
-            </div>
-
-            <div class="project-tags">${tagsHtml}</div>
-
-            <div class="project-action-links">
-              <a href="${proj.repoUrl}" class="btn-link-action" target="_blank" rel="noopener">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55 0-.27-.01-1.19-.02-2.16-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.7 1.25 3.35.96.1-.75.4-1.25.72-1.54-2.55-.29-5.23-1.28-5.23-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18.92-.26 1.91-.39 2.89-.39s1.97.13 2.89.39c2.21-1.49 3.18-1.18 3.18-1.18.63 1.59.23 2.76.11 3.05.74.8 1.19 1.83 1.19 3.09 0 4.42-2.69 5.39-5.25 5.68.41.35.78 1.05.78 2.12 0 1.53-.01 2.77-.01 3.15 0 .3.21.67.8.55A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/></svg>
-                <span>Lihat Repositori</span>
-              </a>
+            <div class="mockup-mini-card">
+              <small>Multi-Server Latency</small>
+              <strong>12ms CDN</strong>
+              <span class="growth-pos">Zero Buffering</span>
             </div>
           </div>
         </div>
       `;
+    } else if (proj.mockupType === "islamic") {
+      screenContent = `
+        <div class="browser-screen-content mockup-dashboard" style="background:#091410">
+          <div class="mockup-dash-nav">
+            <span class="mockup-dash-badge" style="background:rgba(16,185,129,0.2);color:#34d399">Al-Waqt • Geodesic</span>
+            <span class="mockup-dash-uptime">Kemenag RI API</span>
+          </div>
+          <div class="mockup-stat-row">
+            <div class="mockup-mini-card">
+              <small>Arah Kiblat</small>
+              <strong>295.1° Presisi</strong>
+              <span class="growth-pos">Magnetometer</span>
+            </div>
+            <div class="mockup-mini-card">
+              <small>Waktu Sholat</small>
+              <strong>Jadwal Akurat</strong>
+              <span class="growth-pos">Auto Adzan Audio</span>
+            </div>
+          </div>
+        </div>
+      `;
+    } else if (proj.mockupType === "portal") {
+      screenContent = `
+        <div class="browser-screen-content mockup-dashboard">
+          <div class="mockup-dash-nav">
+            <span class="mockup-dash-badge" style="background:rgba(6,182,212,0.2);color:#38bdf8">Portal Akademik</span>
+            <span class="mockup-dash-uptime">Multi-Role CRUD</span>
+          </div>
+          <div class="mockup-stat-row">
+            <div class="mockup-mini-card">
+              <small>Roles Sistem</small>
+              <strong>Admin • Guru • Siswa</strong>
+              <span class="growth-pos">Session Hardened</span>
+            </div>
+            <div class="mockup-mini-card">
+              <small>Dukungan Bahasa</small>
+              <strong>ID / EN / JP / KR</strong>
+              <span class="growth-pos">Multi-Language</span>
+            </div>
+          </div>
+        </div>
+      `;
+    } else {
+      screenContent = `
+        <div class="browser-screen-content mockup-dashboard">
+          <div class="mockup-dash-nav">
+            <span class="mockup-dash-badge">${proj.title}</span>
+            <span class="mockup-dash-uptime">Active Build</span>
+          </div>
+          <div class="mockup-stat-row">
+            <div class="mockup-mini-card">
+              <small>Kategori</small>
+              <strong>${(proj.category || "Fullstack").toUpperCase()}</strong>
+            </div>
+            <div class="mockup-mini-card">
+              <small>Bahasa</small>
+              <strong>${proj.language || "Code"}</strong>
+            </div>
+          </div>
+        </div>
+      `;
+    }
 
-      projectGrid.appendChild(article);
+    const tagsHtml = (proj.tags || []).map((t) => `<span class="tech-tag">${t}</span>`).join("");
+
+    article.innerHTML = `
+      ${isFeatured ? '<div class="border-beam" aria-hidden="true"></div>' : ""}
+      <div class="project-card-grid">
+        <div class="project-mockup-wrapper">
+          <div class="browser-window">
+            <div class="browser-topbar">
+              <div class="browser-traffic-lights">
+                <span class="light red"></span>
+                <span class="light yellow"></span>
+                <span class="light green"></span>
+              </div>
+              <div class="browser-address-bar">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <span>https://${proj.mockupUrl || "github.com/Alfianax01"}</span>
+              </div>
+            </div>
+            ${screenContent}
+          </div>
+        </div>
+
+        <div class="project-details-wrapper">
+          ${isFeatured ? `
+            <div class="project-featured-tag">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span>Featured Project</span>
+            </div>
+          ` : ""}
+          <h3 class="project-title">${proj.title}</h3>
+
+          <div class="project-tabs-control" data-project="${proj.id}">
+            <button class="proj-tab-btn active" data-tab="overview">Overview</button>
+            <button class="proj-tab-btn" data-tab="architecture">Tech Stack</button>
+            <button class="proj-tab-btn" data-tab="impact">Key Impact</button>
+          </div>
+
+          <div class="project-tab-panels">
+            <div class="tab-panel active" data-panel="overview">
+              <p class="project-description">${proj.tabs?.overview || proj.description || ""}</p>
+            </div>
+            <div class="tab-panel" data-panel="architecture">
+              <p class="project-description">${proj.tabs?.architecture || "Dibangun dengan standar kode bersih dan arsitektur modular."}</p>
+            </div>
+            <div class="tab-panel" data-panel="impact">
+              <p class="project-description">${proj.tabs?.impact || "Terbuka di GitHub dengan kode sumber terverifikasi."}</p>
+            </div>
+          </div>
+
+          <div class="project-tags">${tagsHtml}</div>
+
+          <div class="project-action-links">
+            <a href="${proj.repoUrl}" class="btn-link-action" target="_blank" rel="noopener">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55 0-.27-.01-1.19-.02-2.16-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.7 1.25 3.35.96.1-.75.4-1.25.72-1.54-2.55-.29-5.23-1.28-5.23-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18.92-.26 1.91-.39 2.89-.39s1.97.13 2.89.39c2.21-1.49 3.18-1.18 3.18-1.18.63 1.59.23 2.76.11 3.05.74.8 1.19 1.83 1.19 3.09 0 4.42-2.69 5.39-5.25 5.68.41.35.78 1.05.78 2.12 0 1.53-.01 2.77-.01 3.15 0 .3.21.67.8.55A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/></svg>
+              <span>Lihat Repositori</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    `;
+
+    return article;
+  }
+
+  function applyProjectFilterAndRender(showFallbackNotice = false) {
+    if (!projectGrid) return;
+
+    // Pastikan repository dari akun GitHub benar-benar diterima sebelum proses filtering
+    if (!Array.isArray(fetchedRepos) || fetchedRepos.length === 0) {
+      console.warn("Belum ada repositori yang diterima sebelum proses filtering.");
+      return;
+    }
+
+    // Category filtering
+    let filteredRepos = fetchedRepos.filter((proj) => {
+      if (activeCategory === "semua") return true;
+      return proj.category === activeCategory;
+    });
+
+    // Jika filtering menghasilkan array kosong:
+    // - tampilkan fallback semua repository
+    // - jangan tampilkan section kosong
+    let isFallbackToAll = false;
+    if (filteredRepos.length === 0 && fetchedRepos.length > 0) {
+      console.warn(`Filtering kategori "${activeCategory}" menghasilkan array kosong. Melakukan fallback ke semua repositori.`);
+      filteredRepos = [...fetchedRepos];
+      isFallbackToAll = true;
+    }
+
+    // Debugging sementara (wajib sesuai instruksi):
+    console.log("Fetched repositories:", fetchedRepos);
+    console.log("Filtered repositories:", filteredRepos);
+    console.log("Active category:", activeCategory);
+
+    // Render ke DOM
+    projectGrid.innerHTML = "";
+
+    if (showFallbackNotice) {
+      const banner = document.createElement("div");
+      banner.className = "projects-fallback-banner";
+      banner.innerHTML = `
+        <span>ℹ️ Menampilkan data lokal terkurasi (Mode Offline / GitHub API Rate Limit).</span>
+        <a href="https://github.com/Alfianax01" target="_blank" rel="noopener" class="text-link" style="color:inherit;font-weight:600">Lihat Profil GitHub @Alfianax01 ↗</a>
+      `;
+      projectGrid.appendChild(banner);
+    } else if (isFallbackToAll && activeCategory !== "semua") {
+      const notice = document.createElement("div");
+      notice.className = "projects-fallback-banner";
+      notice.innerHTML = `
+        <span>Kategori "${activeCategory}" belum memiliki repositori terpisah. Menampilkan seluruh repositori aktif.</span>
+      `;
+      projectGrid.appendChild(notice);
+    }
+
+    filteredRepos.forEach((proj) => {
+      const card = createProjectCardElement(proj);
+      projectGrid.appendChild(card);
+    });
+
+    // Re-attach 3D tilt
+    attachTiltEffects();
+  }
+
+  // Delegasi event switcher tabs pada projectGrid
+  if (projectGrid) {
+    projectGrid.addEventListener("click", (e) => {
+      const btn = e.target.closest(".proj-tab-btn");
+      if (!btn) return;
+      const tabGroup = btn.closest(".project-tabs-control");
+      const card = btn.closest(".project-details-wrapper");
+      if (!tabGroup || !card) return;
+
+      tabGroup.querySelectorAll(".proj-tab-btn").forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      const selectedTab = btn.getAttribute("data-tab");
+      card.querySelectorAll(".tab-panel").forEach((panel) => {
+        panel.classList.toggle("active", panel.getAttribute("data-panel") === selectedTab);
+      });
     });
   }
+
+  // Event listener filter capsule bar
+  if (filterBar) {
+    filterBar.addEventListener("click", (e) => {
+      const btn = e.target.closest(".filter-capsule-btn");
+      if (!btn) return;
+
+      filterBar.querySelectorAll(".filter-capsule-btn").forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      activeCategory = btn.getAttribute("data-filter") || "semua";
+      applyProjectFilterAndRender();
+    });
+  }
+
+  async function loadGitHubRepositories() {
+    if (!projectGrid) return;
+
+    // 4. Loading state
+    projectGrid.innerHTML = `
+      <div class="projects-status-card loading-state">
+        <div class="projects-status-spinner"></div>
+        <h4 class="projects-status-title">Menghubungkan ke GitHub API...</h4>
+        <p class="projects-status-desc">Mengambil repositori publik dan telemetri kode terkini dari @Alfianax01.</p>
+      </div>
+    `;
+
+    try {
+      // 1. GitHub API fetch
+      const username = data.profile?.handle || "Alfianax01";
+      const apiUrl = `https://api.github.com/users/${username}/repos?sort=updated&per_page=100`;
+
+      const response = await fetch(apiUrl, {
+        headers: {
+          Accept: "application/vnd.github.v3+json"
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`GitHub API HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const rawRepos = await response.json();
+      if (!Array.isArray(rawRepos)) {
+        throw new Error("Format respon GitHub API tidak berupa daftar repositori.");
+      }
+
+      // 2. Data mapping
+      const curatedList = Array.isArray(data.projects) ? data.projects : [];
+
+      fetchedRepos = rawRepos
+        .filter((r) => !r.fork && r.name.toLowerCase() !== "alfianax01")
+        .map((r) => {
+          const curated = curatedList.find((p) => {
+            const pRepoName = (p.repoUrl || "").split("/").filter(Boolean).pop()?.toLowerCase();
+            const pId = (p.id || "").toLowerCase();
+            const rName = r.name.toLowerCase();
+            return pRepoName === rName || pId === rName || pId.includes(rName) || rName.includes(pId);
+          });
+
+          if (curated) {
+            return {
+              ...curated,
+              stars: r.stargazers_count,
+              forks: r.forks_count,
+              language: r.language || (curated.tags ? curated.tags[0] : "TypeScript"),
+              updatedAt: r.updated_at,
+              repoUrl: r.html_url || curated.repoUrl,
+              demoUrl: r.homepage || curated.demoUrl || r.html_url,
+            };
+          }
+
+          // Auto-categorization repositori tambahan
+          let cat = "fullstack";
+          const lowerName = r.name.toLowerCase();
+          const lowerLang = (r.language || "").toLowerCase();
+
+          if (
+            lowerName.includes("stream") ||
+            lowerName.includes("cinema") ||
+            lowerName.includes("web") ||
+            lowerName.includes("front") ||
+            lowerLang === "html" ||
+            lowerLang === "css"
+          ) {
+            cat = "frontend";
+          } else if (
+            lowerName.includes("tool") ||
+            lowerName.includes("sec") ||
+            lowerName.includes("recon") ||
+            lowerName.includes("cli") ||
+            lowerLang === "c++" ||
+            lowerLang === "shell"
+          ) {
+            cat = "tool";
+          } else {
+            cat = "fullstack";
+          }
+
+          const tags = [r.language || "Open Source"].concat(r.topics || []);
+          if (tags.length < 3) tags.push("GitHub Repo");
+
+          return {
+            id: r.name.toLowerCase(),
+            title: r.name.replace(/[-_]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
+            category: cat,
+            featured: false,
+            mockupType: "dashboard",
+            mockupUrl: (r.html_url || "").replace("https://", ""),
+            stars: r.stargazers_count,
+            forks: r.forks_count,
+            language: r.language || "Code",
+            tags: tags.slice(0, 4),
+            tabs: {
+              overview: r.description || "Repositori publik resmi dari akun GitHub @Alfianax01.",
+              architecture: `Dibangun menggunakan ${r.language || "arsitektur modular"}, terintegrasi dengan Git workflow.`,
+              impact: `Dikelola secara terbuka di GitHub dengan ${r.stargazers_count} stars dan ${r.forks_count} forks.`,
+            },
+            repoUrl: r.html_url,
+            demoUrl: r.homepage || r.html_url,
+          };
+        });
+
+      // Urutkan: Featured di atas, lalu repositori dengan stars/aktivitas
+      fetchedRepos.sort((a, b) => {
+        if (a.featured && !b.featured) return -1;
+        if (!a.featured && b.featured) return 1;
+        return (b.stars || 0) - (a.stars || 0);
+      });
+
+      // 3. Category filtering & rendering
+      applyProjectFilterAndRender();
+
+    } catch (err) {
+      // 5. Error state (JANGAN SWALLOW ERROR)
+      console.error("GitHub API Fetch Error:", err);
+
+      if (Array.isArray(data.projects) && data.projects.length > 0) {
+        console.warn("Menggunakan data fallback lokal dari portfolio.data.js karena GitHub API gagal.");
+        fetchedRepos = [...data.projects];
+        applyProjectFilterAndRender(true);
+      } else {
+        projectGrid.innerHTML = `
+          <div class="projects-status-card error-state">
+            <div class="projects-status-icon icon-error">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <h4 class="projects-status-title">Gagal Memuat Repositori GitHub</h4>
+            <p class="projects-status-desc">Terjadi kendala saat menghubungi GitHub API: ${err.message}. Silakan kunjungi profil langsung.</p>
+            <div class="projects-status-actions">
+              <a href="https://github.com/Alfianax01" target="_blank" rel="noopener" class="btn btn-primary magnetic-btn">
+                <span>View GitHub Profile</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </a>
+              <button id="btn-retry-github" class="btn btn-secondary">
+                <span>Coba Lagi</span>
+              </button>
+            </div>
+          </div>
+        `;
+
+        const retryBtn = document.getElementById("btn-retry-github");
+        if (retryBtn) {
+          retryBtn.addEventListener("click", () => {
+            loadGitHubRepositories();
+          });
+        }
+      }
+    }
+  }
+
+  // Inisialisasi pemanggilan GitHub Repositories
+  loadGitHubRepositories();
 
   /* ==========================================================
      3. SCROLL PROGRESS BAR & SLIDING NAV PILL
@@ -570,51 +864,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* ==========================================================
-     10. PROJECT MULTI-TAB SWITCHER (Overview, Tech, Impact)
-     ========================================================== */
-  document.querySelectorAll(".project-tabs-control").forEach((tabGroup) => {
-    const buttons = tabGroup.querySelectorAll(".proj-tab-btn");
-    const container = tabGroup.closest(".project-details-wrapper");
-    if (!container) return;
-    const panels = container.querySelectorAll(".tab-panel");
-
-    buttons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        buttons.forEach((b) => b.classList.remove("active"));
-        btn.classList.add("active");
-
-        const selectedTab = btn.getAttribute("data-tab");
-        panels.forEach((panel) => {
-          panel.classList.toggle("active", panel.getAttribute("data-panel") === selectedTab);
-        });
-      });
-    });
-  });
-
-  /* ==========================================================
-     11. DYNAMIC PROJECT CATEGORY FILTER
-     ========================================================== */
-  const filterBar = document.getElementById("filter-bar");
-  if (filterBar) {
-    filterBar.addEventListener("click", (e) => {
-      const btn = e.target.closest(".filter-capsule-btn");
-      if (!btn) return;
-
-      filterBar.querySelectorAll(".filter-capsule-btn").forEach((b) => b.classList.remove("active"));
-      btn.classList.add("active");
-
-      const category = btn.getAttribute("data-filter");
-      const projectCards = document.querySelectorAll(".project-showcase-card");
-      projectCards.forEach((card) => {
-        const cardCat = card.getAttribute("data-category");
-        const show = category === "semua" || cardCat === category;
-        card.classList.toggle("hidden", !show);
-      });
-    });
-  }
-
-  /* ==========================================================
-     12. FLOATING SPRING TOAST NOTIFICATION SYSTEM
+     10. FLOATING SPRING TOAST NOTIFICATION SYSTEM
      ========================================================== */
   const toastContainer = document.getElementById("toast-container");
   function showToast(message) {
