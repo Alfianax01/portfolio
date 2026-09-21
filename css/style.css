@@ -801,55 +801,6 @@ html[data-theme="light"] .terminal-console {
   100% { transform: translate3d(-50%, 0, 0); }
 }
 
-/* ---------- UPSCAYL-STYLE GIANT KINETIC BRAND TYPOGRAPHY ---------- */
-.kinetic-brand-strip {
-  position: relative;
-  width: 100vw;
-  max-width: 100%;
-  overflow: hidden;
-  padding-block: 28px;
-  pointer-events: none;
-  user-select: none;
-  mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
-  background: transparent;
-  margin-block: 16px;
-  contain: paint;
-}
-
-.kinetic-brand-track {
-  display: flex;
-  align-items: center;
-  gap: 36px;
-  width: max-content;
-  font-family: var(--font-heading);
-  font-size: clamp(2.5rem, 6.5vw, 5.2rem);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-  color: transparent;
-  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.18);
-  animation: kinetic-brand-scroll 40s linear infinite;
-  will-change: transform;
-}
-
-html[data-theme="light"] .kinetic-brand-track {
-  -webkit-text-stroke: 1.5px rgba(15, 23, 42, 0.18);
-}
-
-.brand-divider {
-  font-size: 0.5em;
-  color: var(--color-emerald);
-  opacity: 0.75;
-  text-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
-}
-
-@keyframes kinetic-brand-scroll {
-  0% { transform: translate3d(0, 0, 0); }
-  100% { transform: translate3d(-50%, 0, 0); }
-}
-
 /* ---------- SECTION COMMON ---------- */
 .section {
   padding-block: 90px;
