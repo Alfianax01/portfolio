@@ -43,19 +43,19 @@ const PORTFOLIO_DATA = {
 
   // Tech Stack untuk Infinite Marquee & Skills Matrix
   techStack: [
-    { name: "TypeScript", icon: "⚡" },
-    { name: "React.js", icon: "⚛" },
-    { name: "Next.js", icon: "▲" },
-    { name: "Flutter & Dart", icon: "💙" },
-    { name: "Node.js", icon: "🟢" },
-    { name: "Tailwind CSS", icon: "🎨" },
-    { name: "PHP & MySQL", icon: "🐘" },
-    { name: "C++", icon: "⚙" },
-    { name: "Docker", icon: "🐳" },
-    { name: "Git & GitHub", icon: "🐙" },
+    { name: "TypeScript", icon: "TS" },
+    { name: "React.js", icon: "React" },
+    { name: "Next.js", icon: "Next" },
+    { name: "Flutter & Dart", icon: "Flutter" },
+    { name: "Node.js", icon: "Node" },
+    { name: "Tailwind CSS", icon: "Tailwind" },
+    { name: "PHP & MySQL", icon: "PHP" },
+    { name: "C++", icon: "C++" },
+    { name: "Docker", icon: "Docker" },
+    { name: "Git & GitHub", icon: "Git" },
   ],
 
-  // 4 Pilar Keahlian Teknis
+  // Keahlian & Spesialisasi Teknis
   skills: [
     {
       title: "Full-Stack & Web Architecture",

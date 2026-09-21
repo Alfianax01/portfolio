@@ -844,7 +844,24 @@ html[data-theme="light"] .terminal-console {
 }
 
 .tech-icon {
-  font-size: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-emerald);
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.22);
+  border-radius: 4px;
+  padding: 1px 6px;
+  margin-right: 8px;
+  line-height: 1.4;
+  display: inline-flex;
+  align-items: center;
+}
+
+html[data-theme="light"] .tech-icon {
+  color: #047857;
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.3);
 }
 
 @keyframes marquee-scroll {
@@ -2041,7 +2058,33 @@ html[data-theme="light"] .cmd-close-chip {
 }
 
 .cmd-item-icon {
-  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-xs);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-emerald);
+  flex-shrink: 0;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.cmd-item-icon svg {
+  width: 15px;
+  height: 15px;
+  stroke: currentColor;
+}
+
+.cmd-item:hover .cmd-item-icon,
+.cmd-item.selected .cmd-item-icon {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--color-emerald-light);
+}
+
+html[data-theme="light"] .cmd-item-icon {
+  background: rgba(15, 23, 42, 0.05);
+  color: #047857;
 }
 
 .cmd-item-label {
