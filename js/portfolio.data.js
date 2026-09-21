@@ -24,12 +24,12 @@ const PORTFOLIO_DATA = {
       location: "Indonesia (UTC+7)",
       languages: ["TypeScript", "JavaScript", "Dart (Flutter)", "PHP", "C++", "SQL"],
       passions: ["Fullstack Architecture", "Cybersecurity & OSINT", "Modern UI/UX", "High Performance Systems"],
-      status: "Ready for high-impact missions",
+      status: "Open for software engineering roles & collaboration",
     },
     quickStats: [
       { num: "9+", label: "Repositori GitHub" },
       { num: "5+", label: "Tech Stacks" },
-      { num: "100%", label: "Clean Code Standard" },
+      { num: "100%", label: "Open Source Code" },
     ],
   },
 
@@ -89,7 +89,7 @@ const PORTFOLIO_DATA = {
       repoUrl: "https://github.com/Alfianax01/register",
       demoUrl: "https://github.com/Alfianax01/register",
       mockupType: "dashboard",
-      mockupUrl: "rapim-tni-reg.mil.id/dashboard",
+      mockupUrl: "github.com/Alfianax01/register",
       tags: ["TypeScript", "QR Code Scanner", "Real-Time Telemetry", "PostgreSQL"],
       tabs: {
         overview:
@@ -108,7 +108,7 @@ const PORTFOLIO_DATA = {
       repoUrl: "https://github.com/Alfianax01/secintel-toolkit",
       demoUrl: "https://github.com/Alfianax01/secintel-toolkit",
       mockupType: "cli",
-      mockupUrl: "secintel.cli.internal/recon",
+      mockupUrl: "github.com/Alfianax01/secintel-toolkit",
       tags: ["Node.js", "Threat Intelligence", "OSINT Recon", "DNS/SSL Audit"],
       tabs: {
         overview:
@@ -127,7 +127,7 @@ const PORTFOLIO_DATA = {
       repoUrl: "https://github.com/Alfianax01/RuangSinema",
       demoUrl: "https://github.com/Alfianax01/RuangSinema",
       mockupType: "streaming",
-      mockupUrl: "ruangsinema.stream/explore",
+      mockupUrl: "github.com/Alfianax01/RuangSinema",
       tags: ["TypeScript", "TMDb API", "HLS Streaming", "Web & Android"],
       tabs: {
         overview:
@@ -146,7 +146,7 @@ const PORTFOLIO_DATA = {
       repoUrl: "https://github.com/Alfianax01/Jam-sholat",
       demoUrl: "https://github.com/Alfianax01/Jam-sholat",
       mockupType: "islamic",
-      mockupUrl: "alwaqt.flutter.app/prayer-times",
+      mockupUrl: "github.com/Alfianax01/Jam-sholat",
       tags: ["Flutter", "Dart", "Geodesic Compass", "Kemenag RI API"],
       tabs: {
         overview:
@@ -154,7 +154,7 @@ const PORTFOLIO_DATA = {
         architecture:
           "Kalkulasi algoritma astronomi geodesik spherical trigonometry, state management reaktif di Flutter/Dart, dan audio engine low-latency.",
         impact:
-          "Telah membantu ribuan pengguna mendapatkan jadwal ibadah tepat waktu dengan antarmuka estetis berkelas tinggi.",
+          "Kalkulasi astronomis waktu sholat presisi koordinat lokal terverifikasi Kemenag RI dengan kompas kiblat real-time dan audio low-latency.",
       },
     },
     {
@@ -165,7 +165,7 @@ const PORTFOLIO_DATA = {
       repoUrl: "https://github.com/Alfianax01/web-sekolah",
       demoUrl: "https://github.com/Alfianax01/web-sekolah",
       mockupType: "portal",
-      mockupUrl: "portal-akademik.sch.id/admin",
+      mockupUrl: "github.com/Alfianax01/web-sekolah",
       tags: ["PHP", "MySQL", "Multi-Role CRUD", "Multilanguage"],
       tabs: {
         overview:

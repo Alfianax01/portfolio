@@ -489,10 +489,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 500);
 
       setTimeout(() => {
-        consoleText.innerHTML = `<span style="color:#10b981">✔ [Runtime Output]: "Alfian: Building resilient, battle-tested software 🚀" [Done in 12ms]</span>`;
+        consoleText.innerHTML = `<span style="color:#10b981">✔ [Runtime Output]: "Alfian: Building resilient, high-performance software ⚡" [Done in 12ms]</span>`;
         btnRunCode.style.opacity = "1";
         isRunning = false;
-        showToast("Runtime simulasi berhasil dieksekusi! 🚀");
+        showToast("Runtime simulasi berhasil dieksekusi! ⚡");
       }, 1100);
     });
   }
