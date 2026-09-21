@@ -10,7 +10,50 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=2.2">
+  <style>
+    /* Universal Invisible Scrollbars across all browsers & OS overlays */
+    html, body, * {
+      scrollbar-width: none !important;
+      scrollbar-color: transparent transparent !important;
+      -ms-overflow-style: none !important;
+    }
+    ::-webkit-scrollbar,
+    *::-webkit-scrollbar,
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+      -webkit-appearance: none !important;
+      background: transparent !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+    }
+    ::-webkit-scrollbar-track,
+    *::-webkit-scrollbar-track,
+    html::-webkit-scrollbar-track,
+    body::-webkit-scrollbar-track,
+    ::-webkit-scrollbar-thumb,
+    *::-webkit-scrollbar-thumb,
+    html::-webkit-scrollbar-thumb,
+    body::-webkit-scrollbar-thumb,
+    ::-webkit-scrollbar-corner,
+    *::-webkit-scrollbar-corner {
+      display: none !important;
+      background: transparent !important;
+      width: 0 !important;
+      height: 0 !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+    }
+    html, body {
+      overflow-x: hidden !important;
+      overflow-x: clip !important;
+      max-width: 100vw;
+      width: 100%;
+    }
+  </style>
 </head>
 <body>
   <!-- Scroll Progress Indicator -->
