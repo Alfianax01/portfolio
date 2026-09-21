@@ -364,7 +364,7 @@ document.addEventListener("DOMContentLoaded", () => {
               language: r.language || (curated.tags ? curated.tags[0] : "TypeScript"),
               updatedAt: r.updated_at,
               repoUrl: r.html_url || curated.repoUrl,
-              demoUrl: r.homepage || curated.demoUrl || r.html_url,
+              demoUrl: curated.demoUrl || r.homepage || r.html_url,
             };
           }
 

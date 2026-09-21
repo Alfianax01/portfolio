@@ -87,7 +87,7 @@ const PORTFOLIO_DATA = {
       category: "fullstack",
       featured: true,
       repoUrl: "https://github.com/Alfianax01/register",
-      demoUrl: "https://github.com/Alfianax01/register",
+      demoUrl: "https://www.e-register.my.id/",
       language: "TypeScript",
       specFile: "src/services/checkin.service.ts",
       specRuntime: "TypeScript / WebRTC",
