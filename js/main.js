@@ -1,17 +1,14 @@
 /**
  * HIGH-CRAFT DEVELOPER PORTFOLIO JAVASCRIPT ENGINE
  * Powered by PORTFOLIO_DATA (js/portfolio.data.js)
- * Clean, production-ready, minimalist, and zero unnecessary alerts/toast bloat.
+ * Clean, maintainable, modular, and zero external dependency bloat.
  */
 
 document.addEventListener("DOMContentLoaded", () => {
   const data = window.PORTFOLIO_DATA || {};
 
   /* ==========================================================
-     1. SILENT THEME TOGGLE (GitHub / Vercel / Linear style)
-     ==========================================================
-     - No toasts, no popups, no alerts.
-     - Direct CSS variable switch with smooth 250ms transition.
+     1. THEME TOGGLE (Obsidian Dark <-> Ceramic Light)
      ========================================================== */
   const themeToggle = document.getElementById("theme-toggle");
   const savedTheme = localStorage.getItem("devcraft-theme") || "dark";
@@ -23,9 +20,9 @@ document.addEventListener("DOMContentLoaded", () => {
     document.documentElement.setAttribute("data-theme", next);
     localStorage.setItem("devcraft-theme", next);
 
-    // Subtle micro-interaction feedback on the button itself
+    // Micro interaction scale pada tombol toggle tema
     if (themeToggle) {
-      themeToggle.style.transform = "scale(0.88)";
+      themeToggle.style.transform = "scale(0.85)";
       setTimeout(() => {
         themeToggle.style.transform = "";
       }, 180);
@@ -73,14 +70,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     data.skills.forEach((skill, idx) => {
       const card = document.createElement("div");
-      card.className = "skill-feature-card";
+      card.className = "skill-feature-card tilt-card";
+      card.setAttribute("data-tilt", "true");
 
       const iconPath = icons[idx % icons.length];
       const tagsHtml = skill.tags.map((t) => `<span>${t}</span>`).join("");
 
       card.innerHTML = `
         <div class="skill-icon-wrap">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${iconPath}</svg>
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${iconPath}</svg>
         </div>
         <h3>${skill.title}</h3>
         <p>${skill.desc}</p>
@@ -96,9 +94,11 @@ document.addEventListener("DOMContentLoaded", () => {
     data.projects.forEach((proj) => {
       const article = document.createElement("article");
       const isFeatured = proj.featured;
-      article.className = `project-showcase-card ${isFeatured ? "featured" : ""}`;
+      article.className = `project-showcase-card ${isFeatured ? "border-beam-container" : "tilt-card"}`;
       article.setAttribute("data-category", proj.category);
+      if (!isFeatured) article.setAttribute("data-tilt", "true");
 
+      // Generate realistic browser mockup based on project type
       let screenContent = "";
       if (proj.mockupType === "dashboard") {
         screenContent = `
@@ -142,7 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
         screenContent = `
           <div class="browser-screen-content mockup-dashboard" style="background:#090b10">
             <div class="mockup-dash-nav">
-              <span class="mockup-dash-badge" style="background:rgba(239,68,68,0.15);color:#f87171">60 FPS Ultra HD</span>
+              <span class="mockup-dash-badge" style="background:rgba(239,68,68,0.2);color:#f87171">60 FPS Ultra HD</span>
               <span class="mockup-dash-uptime">TMDb Sync Active</span>
             </div>
             <div class="mockup-stat-row">
@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <strong>${proj.category.toUpperCase()}</strong>
               </div>
               <div class="mockup-mini-card">
-                <small>Status</small>
+                <small>Kualitas</small>
                 <strong>Production Ready</strong>
               </div>
             </div>
@@ -183,6 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const tagsHtml = proj.tags.map((t) => `<span class="tech-tag">${t}</span>`).join("");
 
       article.innerHTML = `
+        ${isFeatured ? '<div class="border-beam" aria-hidden="true"></div>' : ""}
         <div class="project-card-grid">
           <div class="project-mockup-wrapper">
             <div class="browser-window">
@@ -204,7 +205,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="project-details-wrapper">
             ${isFeatured ? `
               <div class="project-featured-tag">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                 <span>Featured Project</span>
               </div>
             ` : ""}
@@ -309,7 +310,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* ==========================================================
-     4. AMBIENT CURSOR GLOW (Subtle Background Lighting)
+     4. AMBIENT CURSOR GLOW
      ========================================================== */
   const cursorGlow = document.getElementById("cursor-glow");
   let mouseX = window.innerWidth / 2;
@@ -365,9 +366,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const ctx = canvas.getContext("2d");
     let width, height;
     let particles = [];
-    const particleCount = 45;
-    const maxDistance = 110;
-    const pointer = { x: -1000, y: -1000, radius: 140 };
+    const particleCount = 55;
+    const maxDistance = 120;
+    const pointer = { x: -1000, y: -1000, radius: 150 };
 
     function resizeCanvas() {
       const heroSec = canvas.closest(".hero-section");
@@ -382,9 +383,9 @@ document.addEventListener("DOMContentLoaded", () => {
         particles.push({
           x: Math.random() * width,
           y: Math.random() * height,
-          vx: (Math.random() - 0.5) * 0.5,
-          vy: (Math.random() - 0.5) * 0.5,
-          radius: Math.random() * 1.6 + 1,
+          vx: (Math.random() - 0.5) * 0.55,
+          vy: (Math.random() - 0.5) * 0.55,
+          radius: Math.random() * 1.8 + 1,
         });
       }
     }
@@ -406,8 +407,8 @@ document.addEventListener("DOMContentLoaded", () => {
     function renderParticles() {
       ctx.clearRect(0, 0, width, height);
       const isDark = document.documentElement.getAttribute("data-theme") !== "light";
-      const particleColor = isDark ? "rgba(16, 185, 129, " : "rgba(15, 23, 42, ";
-      const lineColor = isDark ? "rgba(16, 185, 129, " : "rgba(15, 23, 42, ";
+      const particleColor = isDark ? "rgba(16, 185, 129, " : "rgba(5, 150, 105, ";
+      const lineColor = isDark ? "rgba(6, 182, 212, " : "rgba(8, 145, 178, ";
 
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
@@ -423,25 +424,25 @@ document.addEventListener("DOMContentLoaded", () => {
         if (dist < pointer.radius) {
           const angle = Math.atan2(dy, dx);
           const force = (pointer.radius - dist) / pointer.radius;
-          p.x -= Math.cos(angle) * force * 2;
-          p.y -= Math.sin(angle) * force * 2;
+          p.x -= Math.cos(angle) * force * 2.5;
+          p.y -= Math.sin(angle) * force * 2.5;
         }
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `${particleColor}0.5)`;
+        ctx.fillStyle = `${particleColor}0.65)`;
         ctx.fill();
 
         for (let j = i + 1; j < particles.length; j++) {
           const p2 = particles[j];
           const distBetween = Math.hypot(p.x - p2.x, p.y - p2.y);
           if (distBetween < maxDistance) {
-            const alpha = (1 - distBetween / maxDistance) * (isDark ? 0.12 : 0.08);
+            const alpha = (1 - distBetween / maxDistance) * (isDark ? 0.22 : 0.14);
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p2.x, p2.y);
             ctx.strokeStyle = `${lineColor}${alpha})`;
-            ctx.lineWidth = 0.8;
+            ctx.lineWidth = 0.9;
             ctx.stroke();
           }
         }
@@ -485,18 +486,55 @@ document.addEventListener("DOMContentLoaded", () => {
 
       setTimeout(() => {
         consoleText.innerHTML = `<span style="color:#38bdf8">📦 [github:Alfianax01] 9 repositories verified &amp; connected...</span>`;
-      }, 400);
+      }, 500);
 
       setTimeout(() => {
         consoleText.innerHTML = `<span style="color:#10b981">✔ [Runtime Output]: "Alfian: Building resilient, battle-tested software 🚀" [Done in 12ms]</span>`;
         btnRunCode.style.opacity = "1";
         isRunning = false;
-      }, 950);
+        showToast("Runtime simulasi berhasil dieksekusi! 🚀");
+      }, 1100);
     });
   }
 
   /* ==========================================================
-     8. GITHUB STYLE CONTRIBUTION HEATMAP GENERATOR
+     8. 3D TILT & SPOTLIGHT CARDS
+     ========================================================== */
+  function attachTiltEffects() {
+    const tiltCards = document.querySelectorAll('[data-tilt="true"]');
+    tiltCards.forEach((card) => {
+      const glare = card.querySelector(".spotlight-glare");
+
+      card.addEventListener("pointermove", (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const rotateX = ((y - centerY) / centerY) * -6;
+        const rotateY = ((x - centerX) / centerX) * 6;
+
+        card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateZ(4px)`;
+
+        if (glare) {
+          glare.style.left = `${x}px`;
+          glare.style.top = `${y}px`;
+          glare.style.opacity = "1";
+        }
+      });
+
+      card.addEventListener("pointerleave", () => {
+        card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)";
+        if (glare) glare.style.opacity = "0";
+      });
+    });
+  }
+  attachTiltEffects();
+
+  /* ==========================================================
+     9. GITHUB STYLE CONTRIBUTION HEATMAP GENERATOR
      ========================================================== */
   const heatmapGrid = document.getElementById("heatmap-grid");
   if (heatmapGrid) {
@@ -532,7 +570,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* ==========================================================
-     9. PROJECT MULTI-TAB SWITCHER (Overview, Tech, Impact)
+     10. PROJECT MULTI-TAB SWITCHER (Overview, Tech, Impact)
      ========================================================== */
   document.querySelectorAll(".project-tabs-control").forEach((tabGroup) => {
     const buttons = tabGroup.querySelectorAll(".proj-tab-btn");
@@ -554,7 +592,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /* ==========================================================
-     10. DYNAMIC PROJECT CATEGORY FILTER
+     11. DYNAMIC PROJECT CATEGORY FILTER
      ========================================================== */
   const filterBar = document.getElementById("filter-bar");
   if (filterBar) {
@@ -576,35 +614,34 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* ==========================================================
-     11. SILENT ONE-CLICK EMAIL COPY (In-Button Micro Interaction)
-     ==========================================================
-     - No spam toasts.
-     - Button text transitions temporarily to "Tersalin ✓"
+     12. FLOATING SPRING TOAST NOTIFICATION SYSTEM
      ========================================================== */
-  function copyEmailToClipboard(btn, emailAddress = data.contact?.email || "alfian.devcraft@gmail.com") {
-    const performCopy = () => {
-      if (btn) {
-        const originalHtml = btn.innerHTML;
-        btn.classList.add("copied");
-        btn.innerHTML = `
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-          <span>Tersalin</span>
-        `;
-        setTimeout(() => {
-          btn.innerHTML = originalHtml;
-          btn.classList.remove("copied");
-        }, 1800);
-      }
-    };
+  const toastContainer = document.getElementById("toast-container");
+  function showToast(message) {
+    if (!toastContainer) return;
+    const toast = document.createElement("div");
+    toast.className = "toast-item";
+    toast.innerHTML = `<span>${message}</span>`;
+    toastContainer.appendChild(toast);
 
+    setTimeout(() => {
+      toast.style.opacity = "0";
+      toast.style.transform = "translateY(10px) scale(0.95)";
+      toast.style.transition = "all 0.25s ease";
+      setTimeout(() => toast.remove(), 260);
+    }, 3200);
+  }
+
+  /* ==========================================================
+     13. ONE-CLICK EMAIL COPY
+     ========================================================== */
+  function copyEmailToClipboard(emailAddress = data.contact?.email || "alfian.devcraft@gmail.com") {
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(emailAddress).then(performCopy).catch(() => {
-        fallbackCopyText(emailAddress);
-        performCopy();
-      });
+      navigator.clipboard.writeText(emailAddress).then(() => {
+        showToast(`Email disalin ke clipboard! 📋 (${emailAddress})`);
+      }).catch(() => fallbackCopyText(emailAddress));
     } else {
       fallbackCopyText(emailAddress);
-      performCopy();
     }
   }
 
@@ -615,17 +652,18 @@ document.addEventListener("DOMContentLoaded", () => {
     input.select();
     document.execCommand("copy");
     document.body.removeChild(input);
+    showToast(`Email disalin ke clipboard! 📋 (${text})`);
   }
 
   document.querySelectorAll(".copy-email-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       const email = btn.getAttribute("data-email") || data.contact?.email;
-      copyEmailToClipboard(btn, email);
+      copyEmailToClipboard(email);
     });
   });
 
   /* ==========================================================
-     12. COMMAND PALETTE (CTRL+K / CMD+K)
+     14. COMMAND PALETTE (CTRL+K / CMD+K)
      ========================================================== */
   const cmdPalette = document.getElementById("cmd-palette");
   const cmdTriggerBtn = document.getElementById("cmd-trigger-btn");
@@ -707,15 +745,14 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if (action === "toggle-theme") {
       toggleTheme();
     } else if (action === "copy-email") {
-      const directBtn = document.querySelector(".copy-email-btn");
-      copyEmailToClipboard(directBtn, data.contact?.email);
+      copyEmailToClipboard();
     } else if (action === "open-github") {
       window.open(data.contact?.github || "https://github.com/Alfianax01", "_blank", "noopener");
     }
   }
 
   /* ==========================================================
-     13. CONTACT FORM (Minimal & Clean UX)
+     15. TACTILE CONTACT FORM
      ========================================================== */
   const contactForm = document.getElementById("contact-form");
   const formFeedback = document.getElementById("form-feedback");
@@ -748,20 +785,31 @@ document.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => {
         btnSubmit.classList.remove("loading");
         btnSubmit.classList.add("success");
+        showToast("Pesan berhasil dikirim ke Alfian! Terima kasih. 🎉");
         contactForm.reset();
-
-        if (formFeedback) {
-          formFeedback.hidden = false;
-          formFeedback.className = "form-feedback-message success";
-          formFeedback.textContent = "Pesan Anda berhasil dikirim. Terima kasih!";
-        }
 
         setTimeout(() => {
           btnSubmit.classList.remove("success");
           btnSubmit.disabled = false;
-          if (formFeedback) formFeedback.hidden = true;
-        }, 4000);
-      }, 900);
+        }, 3500);
+      }, 1200);
     });
   }
+
+  /* ==========================================================
+     16. MAGNETIC BUTTON PHYSICS
+     ========================================================== */
+  const magneticButtons = document.querySelectorAll('[data-magnetic="true"]');
+  magneticButtons.forEach((btn) => {
+    btn.addEventListener("pointermove", (e) => {
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      btn.style.transform = `translate(${x * 0.25}px, ${y * 0.25}px)`;
+    });
+
+    btn.addEventListener("pointerleave", () => {
+      btn.style.transform = "translate(0px, 0px)";
+    });
+  });
 });
