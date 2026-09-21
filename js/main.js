@@ -1048,7 +1048,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const heroButtons = document.getElementById("hero-buttons");
     const heroStats = document.getElementById("hero-stats");
     const heroTerminal = document.getElementById("hero-terminal");
-    const heroScrollCue = document.querySelector(".hero-scroll-cue-wrapper");
 
     if (heroTitle) {
       heroTl.from(heroTitle, { y: 60, opacity: 0, duration: 1.1 });
@@ -1067,9 +1066,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     if (heroTerminal) {
       heroTl.from(heroTerminal, { y: 45, opacity: 0, duration: 1.2, ease: "power3.out" }, "-=0.8");
-    }
-    if (heroScrollCue) {
-      heroTl.from(heroScrollCue, { opacity: 0, y: 15, duration: 0.8 }, "-=0.4");
     }
 
     // 2. Chromatic Keyword Text Cycle (Upscayl #text-linux, #text-macos, #text-windows loop)
